@@ -1,0 +1,25 @@
+{
+  "name": "project3-restful",
+  "version": "1.0.0",
+  "description": "RESTful server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lani-lee/Project3-RESTful.git"
+  },
+  "author": "Lani Lee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lani-lee/Project3-RESTful/issues"
+  },
+  "homepage": "https://github.com/lani-lee/Project3-RESTful#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "js2xmlparser": "^4.0.0",
+    "sqlite3": "^4.1.0"
+  }
+}
