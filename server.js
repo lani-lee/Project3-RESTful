@@ -68,6 +68,31 @@ app.get("/neighborhoods", (req, res) => {
 // seperate date and time fields
 // query options: start_date, end_date, code, grid, neighborhood, limit, format
 app.get("/incidents", (req, res) => {
+	
+	var incidentObject ={};
+	var keys ={
+		date:{},
+		time:{},
+		incident:{},
+		police_grid:{},
+		block:{}
+		
+	};
+	db.each("SELECT * FROM incidents", (err,row) =>{
+		//keys = "I"+ row.case_number;
+		incidentObject["I"+ row.case_number]={
+		date:row.date_time.split("T")[0],
+		time:row.date_time.split("T")[1],
+		code:row.code,
+		incident:row.incident,
+		police_grid:row.police_grid,
+		neighborhood_number:row.neighborhood_number,
+		block:row.block
+		};
+	},	() => {
+        // sends json object
+        res.type("json").send(incidentObject);
+    });
     
 });
 
@@ -85,6 +110,8 @@ app.get("/incidents", (req, res) => {
 */
 // reject with status 500 if case number already exists
 app.put("/new-incident", (req, res) => {
+	/*var new_incident={ id: "I"+parseInt(req.body.case_number,14)
+	}*/ // need to figure out where case_number is in the put request
     
 });
 
