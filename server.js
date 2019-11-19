@@ -1,3 +1,7 @@
+// helpful links
+// INSERT INTO database: https://www.guru99.com/insert-into.html
+
+
 // importing modules
 var express = require("express")
 var sqlite3 = require("sqlite3")
@@ -30,22 +34,51 @@ app.get("/codes", (req, res) => {
     var codeObject = {};
     var newKey = "";
     var newValue = "";
-    db.each("SELECT * FROM Codes", (err, row) => {
-        newKey = "C" + row.code;
-        newValue = row.incident_type;
-        codeObject[newKey] = newValue;
-    }, () => {
-        // changes format of response 
-        if (req.query.format == "xml") {
-            // sends xml file if format=xml
-            var xmlCodes = js2xmlparser.parse("codes", codeObject);
-            res.type("xml").send(xmlCodes);
-        }
-        else {
-            // if xml is not specified, sends json object
-            res.type("json").send(codeObject);
-        }
-    });
+    // if codes are specified, run a query for each code and send the object
+    if (req.query.code !== undefined) {
+        var requestedCodes = req.query.code.split(",");
+        // promise for database query 
+        var codePromise = new Promise((resolve, reject) => {
+            requestedCodes.forEach(code => {
+                db.get("SELECT * FROM Codes WHERE code=?", [code], (err, row) => {
+                    newKey = "C" + row.code;
+                    newValue = row.incident_type;
+                    codeObject[newKey] = newValue;
+                });
+            });
+            resolve(codeObject);
+        });
+        codePromise.then(result => {
+            if (req.query.format == "xml") {
+                // sends xml file if format=xml
+                var xmlCodes = js2xmlparser.parse("codes", result);
+                res.type("xml").send(xmlCodes);
+            }
+            else {
+                // if xml is not specified, sends json object
+                res.type("json").send(result);
+            }
+        });
+    }
+    else {
+        // if no codes specified
+        db.each("SELECT * FROM Codes", (err, row) => {
+            newKey = "C" + row.code;
+            newValue = row.incident_type;
+            codeObject[newKey] = newValue;
+        }, () => {
+            // changes format of response 
+            if (req.query.format == "xml") {
+                // sends xml file if format=xml
+                var xmlCodes = js2xmlparser.parse("codes", codeObject);
+                res.type("xml").send(xmlCodes);
+            }
+            else {
+                // if xml is not specified, sends json object
+                res.type("json").send(codeObject);
+            }
+        });
+    }
 });
 
 // returns JSON object wiht list of neighborhood ids and their corresponding neighborhood name
@@ -76,8 +109,8 @@ app.get("/incidents", (req, res) => {
 		incident:{},
 		police_grid:{},
 		block:{}
-		
 	};
+    
 	db.each("SELECT * FROM incidents", (err,row) =>{
 		//keys = "I"+ row.case_number;
 		incidentObject["I"+ row.case_number]={
