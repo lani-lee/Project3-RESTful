@@ -185,10 +185,19 @@ app.get("/incidents", (req, res) => {
 	console.log(WhereString);
 	
 		db.each("SELECT * FROM incidents"+WhereString+" ORDER BY date_time LIMIT ?",[limit],(err,row) =>{// for limit sort by date time then do the first n objects
-		//keys = "I"+ row.case_number;
+		var checkTime=row.date_time.split("T")[1];
+		var position=checkTime.indexOf(".");
+		if(position!==-1)
+		{
+			var goodTime=checkTime.split(".")[0];
+		}
+		else
+		{
+			goodTime=checkTime;
+		}
 		incidentObject["I"+ row.case_number]={
 		date:row.date_time.split("T")[0],
-		time:row.date_time.split("T")[1],
+		time:goodTime,
 		code:row.code,
 		incident:row.incident,
 		police_grid:row.police_grid,
