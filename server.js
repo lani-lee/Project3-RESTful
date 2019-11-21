@@ -189,9 +189,39 @@ app.get("/incidents", (req, res) => {
 		}
 		WhereString=WhereString+")";
 	}
+    // start and end dates
+    if (req.query.start_date !== undefined && req.query.end_date !== undefined) {
+        var start = req.query.start_date + "T00:00:00"
+        var end = req.query.end_date + "T23:59:59";
+        if (WhereString === "") {
+            WhereString = "WHERE date_time > \"" + start + "\" AND date_time < \"" + end + "\"";
+        }
+        else {
+            WhereString += " AND date_time > \"" + start + "\" AND date_time < \"" + end + "\"";
+        }
+    } 
+    else if (req.query.start_date !== undefined) {
+        var start = req.query.start_date + "T00:00:00"
+        if (WhereString === "") {
+            WhereString = "WHERE date_time > \"" + start + "\"";
+        }
+        else {
+            WhereString += " AND date_time > \"" + start + "\"";
+        }
+    }
+    else if (req.query.end_date !==undefined) {
+        var end = req.query.end_date + "T23:59:59";
+        if (WhereString === "") {
+            WhereString = "WHERE date_time < \"" + end + "\"";
+        }
+        else {
+            WhereString += " AND date_time < \"" + end + "\"";
+        }
+    }
+    
 	console.log(WhereString);
 	
-		db.each("SELECT * FROM incidents"+WhereString+" ORDER BY date_time LIMIT ?",[limit],(err,row) =>{// for limit sort by date time then do the first n objects
+		db.each("SELECT * FROM incidents "+WhereString+" ORDER BY date_time LIMIT ?",[limit],(err,row) =>{// for limit sort by date time then do the first n objects
 		//keys = "I"+ row.case_number;
 		incidentObject["I"+ row.case_number]={
 		date:row.date_time.split("T")[0],
