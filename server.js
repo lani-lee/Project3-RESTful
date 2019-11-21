@@ -105,11 +105,64 @@ app.get("/incidents", (req, res) => {
 		date:{},
 		time:{},
 		incident:{},
+		neighborhood_number:{},
 		police_grid:{},
 		block:{}
 		
 	};
-	db.each("SELECT * FROM incidents", (err,row) =>{// for limit sort by date time then do the first n objects
+	var limit=10000;
+	var WhereString="";
+	if(req.query.limit!==undefined)
+	{
+		limit=parseInt(req.query.limit,10);
+	}
+	if(req.query.code!==undefined)
+	{
+		var codes=req.query.code.split(",");
+		WhereString=" WHERE (code="+codes[0];
+		for(let i =1;i<codes.length;i++)
+		{
+			WhereString=WhereString+  " OR code="+codes[i];
+		}
+		WhereString=WhereString+")";
+	}
+	if(req.query.id!==undefined)
+	{
+		var neighborhood= req.query.id.split(",");
+		if(WhereString==="")
+		{
+			WhereString= "WHERE (neighborhood_number="+neighborhood[0];
+		}
+		else
+		{			
+			WhereString= WhereString+" AND (neighborhood_number="+neighborhood[0];
+		}
+		for(let i =1;i<neighborhood.length;i++)
+		{
+			WhereString= WhereString+ " OR neighborhood_number="+ neighborhood[i];
+		}
+		WhereString=WhereString+")";
+	}
+	if(req.query.grid!==undefined)
+	{
+		var grids= req.query.grid.split(",");
+		if(WhereString==="")
+		{
+			WhereString=" WHERE (police_grid="+grids[0];
+		}
+		else
+		{
+			WhereString=WhereString+" AND (police_grid="+grids[0];
+		}
+		for(let i=1;i<grids.length;i++)
+		{
+			WhereString= WhereString+ " OR police_grid="+grids[i];
+		}
+		WhereString=WhereString+")";
+	}
+	console.log(WhereString);
+	
+		db.each("SELECT * FROM incidents"+WhereString+" ORDER BY date_time LIMIT ?",[limit],(err,row) =>{// for limit sort by date time then do the first n objects
 		//keys = "I"+ row.case_number;
 		incidentObject["I"+ row.case_number]={
 		date:row.date_time.split("T")[0],
@@ -131,7 +184,6 @@ app.get("/incidents", (req, res) => {
 			res.type("json").send(incidentObject);
 		}
     });
-    
 });
 // upload new incident to database
 /*
@@ -163,8 +215,6 @@ app.put("/new-incident", (req, res) => {
 			db.run("INSERT INTO incidents (case_number,date_time,code,incident,police_grid,neighborhood_number,block) VALUES(?,?,?,?,?,?,?)",[incident_number,date_time,code,incident,police_grid,neighborhood_number,block],(err)=>{
 				if(err)
 				{
-										console.log(err);
-
 					res.status(500).send('Error: something happened');
 				}
 				else
