@@ -12,6 +12,16 @@
     "url": "git+https://github.com/lani-lee/Project3-RESTful.git"
   },
   "author": "Lani Lee",
+  "contributors": [
+    {
+      "name": "Gafar Amuda"
+      "email": "amud6981@stthomas.edu"
+    },
+    {
+      "name": "Lani Lee"
+      "email": "lee09113@stthomas.edu"
+    }
+    ]
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/lani-lee/Project3-RESTful/issues"
