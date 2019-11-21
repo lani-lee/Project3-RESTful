@@ -32,33 +32,31 @@ app.get("/codes", (req, res) => {
     var codeObject = {};
     var newKey = "";
     var newValue = "";
+    var queryString = "SELECT * FROM Codes";
     // if codes are specified, run a query for each code and send the object
     if (req.query.code !== undefined) {
         var requestedCodes = req.query.code.split(",");
-        // promise for database query 
-        var codePromise = new Promise((resolve, reject) => {
-            requestedCodes.forEach(code => {
-                db.get("SELECT * FROM Codes WHERE code=?", [code], (err, row) => {
-                    newKey = "C" + row.code;
-                    newValue = row.incident_type;
-                    codeObject[newKey] = newValue;
-                });
-            });
-            resolve(codeObject);
-        });
-        codePromise.then(result => {
+        
+        queryString += " WHERE code=?";
+        for (let i=1; i<requestedCodes.length; i++) {
+            queryString += " OR code=?"
+        }
+        db.each(queryString, requestedCodes, (err, row) => {
+            newKey = "C" + row.code;
+            newValue = row.incident_type;
+            codeObject[newKey] = newValue;
+        }, () => {
             if (req.query.format == "xml") {
                 // sends xml file if format=xml
-                var xmlCodes = js2xmlparser.parse("codes", result);
+                var xmlCodes = js2xmlparser.parse("codes", codeObject);
                 res.type("xml").send(xmlCodes);
             }
             else {
                 // if xml is not specified, sends json object
-                res.type("json").send(result);
+                res.type("json").send(codeObject);
             }
         });
-    }
-    else {
+    } else {
         // if no codes specified
         db.each("SELECT * FROM Codes", (err, row) => {
             newKey = "C" + row.code;
