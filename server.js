@@ -12,7 +12,7 @@ var db_filename = path.join(__dirname, "public", "stpaul_crime.sqlite3");
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
-var port = 8000;
+var port = 8006;
 
 app.use(express.static(public_dir));
 
@@ -32,41 +32,46 @@ app.get("/codes", (req, res) => {
     var codeObject = {};
     var newKey = "";
     var newValue = "";
-    
-    var queryString = "SELECT * FROM Codes";
+    // if codes are specified, run a query for each code and send the object
     if (req.query.code !== undefined) {
         var requestedCodes = req.query.code.split(",");
-        queryString += " WHERE code=?";
-        for (let i=1; i<requestedCodes.length; i++) {
-            queryString += " OR code=?"
-        }
-        console.log(queryString);
-        db.each(queryString, requestedCodes, (err, row) => {
+        // promise for database query 
+        var codePromise = new Promise((resolve, reject) => {
+            requestedCodes.forEach(code => {
+                db.get("SELECT * FROM Codes WHERE code=?", [code], (err, row) => {
+                    newKey = "C" + row.code;
+                    newValue = row.incident_type;
+                    codeObject[newKey] = newValue;
+                });
+            });
+            resolve(codeObject);
+        });
+        codePromise.then(result => {
+            if (req.query.format == "xml") {
+                // sends xml file if format=xml
+                var xmlCodes = js2xmlparser.parse("codes", result);
+                res.type("xml").send(xmlCodes);
+            }
+            else {
+                // if xml is not specified, sends json object
+                res.type("json").send(result);
+            }
+        });
+    }
+    else {
+        // if no codes specified
+        db.each("SELECT * FROM Codes", (err, row) => {
             newKey = "C" + row.code;
             newValue = row.incident_type;
             codeObject[newKey] = newValue;
         }, () => {
+            // changes format of response 
             if (req.query.format == "xml") {
                 // sends xml file if format=xml
                 var xmlCodes = js2xmlparser.parse("codes", codeObject);
                 res.type("xml").send(xmlCodes);
             }
             else {
-                // if xml is not specified, sends json object
-                res.type("json").send(codeObject);
-            }
-        });  
-    } else {
-        db.each("SELECT * FROM Codes", (err, row) => {
-            newKey = "C" + row.code;
-            newValue = row.incident_type;
-            codeObject[newKey] = newValue;
-        }, () => {
-            if (req.query.format == "xml") {
-                // sends xml file if format=xml
-                var xmlCodes = js2xmlparser.parse("codes", codeObject);
-                res.type("xml").send(xmlCodes);
-            } else {
                 // if xml is not specified, sends json object
                 res.type("json").send(codeObject);
             }
@@ -80,47 +85,14 @@ app.get("/neighborhoods", (req, res) => {
     var neighborhoodObject = {};
     var newKey = "";
     var newValue = "";
-
-    
-    var queryString = "SELECT * FROM Neighborhoods";
-    if (req.query.id !== undefined) {
-        var requestedNeighborhoods = req.query.id.split(",");
-        queryString += " WHERE neighborhood_number=?";
-        for (let i=1; i<requestedNeighborhoods.length; i++) {
-            queryString += " OR neighborhood_number=?"
-        }
-        console.log(queryString);
-        db.each(queryString, requestedNeighborhoods, (err, row) => {
-            newKey = "N" + row.neighborhood_number;
-            newValue = row.neighborhood_name;
-            neighborhoodObject[newKey] = newValue;
-        }, () => {
-            if (req.query.format == "xml") {
-                // sends xml file if format=xml
-                var xmlCodes = js2xmlparser.parse("neighborhoods", neighborhoodObject);
-                res.type("xml").send(xmlCodes);
-            }
-            else {
-                // if xml is not specified, sends json object
-                res.type("json").send(neighborhoodObject);
-            }
-        });  
-    } else {
-        db.each("SELECT * FROM Neighborhoods", (err, row) => {
-            newKey = "N" + row.neighborhood_number;
-            newValue = row.neighborhood_name;
-            neighborhoodObject[newKey] = newValue;
-        }, () => {
-            if (req.query.format == "xml") {
-                // sends xml file if format=xml
-                var xmlCodes = js2xmlparser.parse("neighborhoods", neighborhoodObject);
-                res.type("xml").send(xmlCodes);
-            } else {
-                // if xml is not specified, sends json object
-                res.type("json").send(neighborhoodObject);
-            }
-        });
-    }
+    db.each("SELECT * FROM Neighborhoods", (err, row) => {
+        newKey = "N" + row.neighborhood_number;
+        newValue = row.neighborhood_name;
+        neighborhoodObject[newKey] = newValue;
+    }, () => {
+        // sends json object
+        res.type("json").send(neighborhoodObject);
+    });
 });
 
 // returns JSON object with list of crime incidents
@@ -138,7 +110,6 @@ app.get("/incidents", (req, res) => {
 		block:{}
 		
 	};
-
 	var limit=10000;
 	var WhereString="";
 	if(req.query.limit!==undefined)
@@ -189,39 +160,31 @@ app.get("/incidents", (req, res) => {
 		}
 		WhereString=WhereString+")";
 	}
-    // start and end dates
-    if (req.query.start_date !== undefined && req.query.end_date !== undefined) {
-        var start = req.query.start_date + "T00:00:00"
-        var end = req.query.end_date + "T23:59:59";
-        if (WhereString === "") {
-            WhereString = "WHERE date_time > \"" + start + "\" AND date_time < \"" + end + "\"";
-        }
-        else {
-            WhereString += " AND date_time > \"" + start + "\" AND date_time < \"" + end + "\"";
-        }
-    } 
-    else if (req.query.start_date !== undefined) {
-        var start = req.query.start_date + "T00:00:00"
-        if (WhereString === "") {
-            WhereString = "WHERE date_time > \"" + start + "\"";
-        }
-        else {
-            WhereString += " AND date_time > \"" + start + "\"";
-        }
-    }
-    else if (req.query.end_date !==undefined) {
-        var end = req.query.end_date + "T23:59:59";
-        if (WhereString === "") {
-            WhereString = "WHERE date_time < \"" + end + "\"";
-        }
-        else {
-            WhereString += " AND date_time < \"" + end + "\"";
-        }
-    }
-    
+	if(req.query.start_date!==undefined)
+	{
+		if(WhereString==="")
+		{
+			WhereString=" WHERE (date_time >= "+"'"+ req.query.start_date+"T00:00:00"+"')";
+		}
+		else
+		{
+			WhereString=WhereString+" AND (date_time >= "+"'"+req.query.start_date+"T"+"00:00:00')";
+		}
+	}
+	if(req.query.end_date!==undefined)
+	{
+		if(WhereString==="")
+		{
+			WhereString=" WHERE ( date_time <= "+"'"+ req.query.end_date+"T"+"23:59:59')";
+		}
+		else
+		{
+			WhereString=WhereString+" AND ( date_time <= "+ "'"+req.query.end_date+"T"+"23:59:59')";
+		}
+	}
 	console.log(WhereString);
 	
-		db.each("SELECT * FROM incidents "+WhereString+" ORDER BY date_time LIMIT ?",[limit],(err,row) =>{// for limit sort by date time then do the first n objects
+		db.each("SELECT * FROM incidents"+WhereString+" ORDER BY date_time LIMIT ?",[limit],(err,row) =>{// for limit sort by date time then do the first n objects
 		//keys = "I"+ row.case_number;
 		incidentObject["I"+ row.case_number]={
 		date:row.date_time.split("T")[0],
@@ -243,7 +206,6 @@ app.get("/incidents", (req, res) => {
 			res.type("json").send(incidentObject);
 		}
     });
-
 });
 // upload new incident to database
 /*
