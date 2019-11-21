@@ -85,14 +85,45 @@ app.get("/neighborhoods", (req, res) => {
     var neighborhoodObject = {};
     var newKey = "";
     var newValue = "";
-    db.each("SELECT * FROM Neighborhoods", (err, row) => {
-        newKey = "N" + row.neighborhood_number;
-        newValue = row.neighborhood_name;
-        neighborhoodObject[newKey] = newValue;
-    }, () => {
-        // sends json object
-        res.type("json").send(neighborhoodObject);
-    });
+	var queryString = "SELECT * FROM Neighborhoods";
+    if (req.query.id !== undefined) {
+        var requestedNeighborhoods = req.query.id.split(",");
+        queryString += " WHERE neighborhood_number=?";
+        for (let i=1; i<requestedNeighborhoods.length; i++) {
+            queryString += " OR neighborhood_number=?"
+        }
+        console.log(queryString);
+        db.each(queryString, requestedNeighborhoods, (err, row) => {
+            newKey = "N" + row.neighborhood_number;
+            newValue = row.neighborhood_name;
+            neighborhoodObject[newKey] = newValue;
+        }, () => {
+            if (req.query.format == "xml") {
+                // sends xml file if format=xml
+                var xmlCodes = js2xmlparser.parse("neighborhoods", neighborhoodObject);
+                res.type("xml").send(xmlCodes);
+            }
+            else {
+                // if xml is not specified, sends json object
+                res.type("json").send(neighborhoodObject);
+            }
+        });  
+    } else {
+        db.each("SELECT * FROM Neighborhoods", (err, row) => {
+            newKey = "N" + row.neighborhood_number;
+            newValue = row.neighborhood_name;
+            neighborhoodObject[newKey] = newValue;
+        }, () => {
+            if (req.query.format == "xml") {
+                // sends xml file if format=xml
+                var xmlCodes = js2xmlparser.parse("neighborhoods", neighborhoodObject);
+                res.type("xml").send(xmlCodes);
+            } else {
+                // if xml is not specified, sends json object
+                res.type("json").send(neighborhoodObject);
+            }
+        });
+    }
 });
 
 // returns JSON object with list of crime incidents
