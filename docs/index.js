@@ -1,8 +1,3 @@
-
-var bounds = [	
-				[44.888288,-93.1779],
-				[44.991993,-93.005062]
-			 ]
 var corner1 = L.latLng(44.888288,-93.1779),
 	corner2 = L.latLng(44.991993,-93.005062),
 	boundss=L.latLngBounds(corner1,corner2);
@@ -19,3 +14,14 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 		accessToken:'pk.eyJ1IjoiYW11ZDY5ODEiLCJhIjoiY2szdXltcGtjMDU5djNobHBqMzk4eG0zeCJ9.BsZLJkCaw2Bui_sh7DmdgQ'
 
 }).addTo(map);
+
+map.addControl( new L.Control.Search({
+		url: 'https://nominatim.openstreetmap.org/search?format=json&q={s}',
+		jsonpParam: 'json_callback',
+		propertyName: 'display_name',
+		propertyLoc: ['lat','lon'],
+		marker: L.circleMarker([0,0],{radius:30}),
+		autoCollapse: true,
+		autoType: false,
+		minLength: 2
+	}) );
