@@ -2,5 +2,11 @@
 
 
 #mapid {
-		height: 800px;		
+		height: 500px;		
 		}
+		
+.incidents-table{
+   overflow-y:scroll;
+   height:100px;
+   display:block;
+}

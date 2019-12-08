@@ -25,3 +25,47 @@ map.addControl( new L.Control.Search({
 		autoType: false,
 		minLength: 2
 	}) );
+
+
+
+
+
+var incident = {
+    list: [],
+    loadList: function() {
+		// hear this function load list calls from the restful api as a promise function to gather data from the api
+        return m.request({
+            method: "GET",
+            url: "http://localhost:8000/incidents",
+            withCredentials: false,
+        })
+		//promise has been completed result.data is a json
+        .then(function(result) {
+			incident.list=[]
+			for(let i  in result)
+			{
+				incident.list.push(result[i]);
+			}
+            //incident.list = result
+        })
+    },
+};
+//overwritting over the map need to figure that out
+/*
+var incidentTable = {
+    oninit: incident.loadList,
+    view: function() {
+		//console.log(incident);
+        return m(".incidents-table", incident.list.map(function(incidents) {// incidents is treated like an array loops through array and populates it
+            return m(".incidents-table-item",[m("td",incidents.date),m("td",incidents.incident)])//.incidents-table-item is a div
+        }))
+    }
+};
+
+//var incidentTable = require("./views/incidentTable.js")
+
+
+
+//m.render(document.body, "hello world")
+
+m.mount(document.body, incidentTable)// m.mount renders the specified components into a DOM element*/
