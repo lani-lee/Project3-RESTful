@@ -3,6 +3,7 @@ var map;
 var app;
 
 // default boundaries of St. Paul
+// corner1 = NW corner, corner2 = SE corner
 var corner1 = L.latLng(44.988019, -93.208612),
 	corner2 = L.latLng(44.890657, -93.004356),
 	cityLimits = L.latLngBounds(corner1,corner2);
@@ -50,7 +51,7 @@ function Init(crime_api_url) {
         }) 
     );
 
-    $.getJSON(crime_api_url+"/incidents",(data)=>{
+    $.getJSON(crime_api_url + "/incidents", (data)=>{
 		console.log(data);
 	});
     

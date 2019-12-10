@@ -26,9 +26,11 @@ var db = new sqlite3.Database(db_filename, sqlite3.OPEN_READWRITE, (err) => {
     }
 });
 
+
 // returns JSON object with list of codes and their corresponding incident type
 // query options: code, format
 app.get("/codes", (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
     var codeObject = {};
     var newKey = "";
     var newValue = "";
@@ -80,6 +82,7 @@ app.get("/codes", (req, res) => {
 // returns JSON object wiht list of neighborhood ids and their corresponding neighborhood name
 // query options: id, format
 app.get("/neighborhoods", (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
     var neighborhoodObject = {};
     var newKey = "";
     var newValue = "";
@@ -128,7 +131,7 @@ app.get("/neighborhoods", (req, res) => {
 // seperate date and time fields
 // query options: start_date, end_date, code, grid, neighborhood, limit, format
 app.get("/incidents", (req, res) => {
-	
+	res.header("Access-Control-Allow-Origin", "*");
 	var incidentObject ={};
 	var keys ={
 		date:{},
@@ -260,6 +263,7 @@ app.get("/incidents", (req, res) => {
 
 // reject with status 500 if case number already exists
 app.put("/new-incident", (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
 	var incident_check=false;
 	var incident_number= parseInt(req.body.case_number,10);
 	var date_time=req.body.date+"T"+req.body.time;
