@@ -12,7 +12,7 @@ var db_filename = path.join(__dirname, "public", "stpaul_crime.sqlite3");
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
-var port = 8000;
+var port = process.argv[2];
 
 app.use(express.static(public_dir));
 
