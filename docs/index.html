@@ -66,18 +66,18 @@
                     <th>Block</th>
                 </thead>
                 <tbody>
-                    <tr v-for="incident in incidents">
-                        <td> {{ incident.case_number }} </td>
+                    <tr v-for="(incident, key) in incidents">
+                        <td> {{ key }} </td>
                         <td> {{ incident.date }} </td>
                         <td> {{ incident.time }} </td>
-                        <td> {{ incident.code }} </td>
+                        <td> {{ codes["C" + incident.code] }} </td>
                         <td> {{ incident.incident }} </td>
-                        <td> {{ incident.neighborhood_number }} </td>
+                        <td> {{ incident.police_grid }} </td>
+                        <td> {{ neighborhoods["N" + incident.neighborhood_number] }} </td>
                         <td> {{ incident.block }} </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <script src="scripts/v.js"></script>
     </body>
 </html>

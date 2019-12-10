@@ -4,6 +4,7 @@ var app;
 var incidents;
 var crime_api_url;
 var incident_list;
+var neighborhood;
 
 // default boundaries of St. Paul
 var corner1 = L.latLng(44.988019, -93.208612),
@@ -54,12 +55,22 @@ function Init(api_url) {
         })
     );
     
+    // add markers to map
+    // Saint Anthony Park
+    L.marker([44.969908, -93.197343],
+        {
+            //icon: L.circleMarker([0,0],{radius:30})
+        }).addTo(map);
+    
+    
     
     incident_list = new Vue({
         el: '#incident-list',
         data: {
             incidents: {},
-            bounds: new LatLngBounds()
+            neighborhoods: {},
+            codes: {}
+            //bounds: new LatLngBounds()
         }
         /*
         ,
@@ -85,6 +96,7 @@ function Init(api_url) {
         }
         */
     });
+    
 
 	// get incident data from api, populate vue
 	
@@ -92,6 +104,14 @@ function Init(api_url) {
 	$.getJSON(crime_api_url + "/incidents?start_date=2019-10-01&end_date=2019-10-31", (data)=> {
         incident_list.incidents = data;
         console.log(incident_list.incidents);  
+	});
+    
+    $.getJSON(crime_api_url + "/neighborhoods", (data)=> {
+         incident_list.neighborhoods = data;
+	});
+    
+    $.getJSON(crime_api_url + "/codes", (data)=> {
+         incident_list.codes = data;
 	});
     
     //console.log(getIncidents(corner1, corner2));
