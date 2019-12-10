@@ -55,7 +55,7 @@
         
         <div>   
             <table id='incident-list'>
-                <tr>
+                <thead>
                     <th>Case Number</th>
                     <th>Date</th>
                     <th>Time</th>
@@ -64,10 +64,10 @@
                     <th>Police Grid</th>
                     <th>Neighborhood</th>
                     <th>Block</th>
-                </tr>
+                </thead>
                 <tbody>
-                    <tr v-for="incident in incident_list">
-                        <td> {{ incident }} </td>
+                    <tr v-for="incident in incidents">
+                        <td> {{ incident.case_number }} </td>
                         <td> {{ incident.date }} </td>
                         <td> {{ incident.time }} </td>
                         <td> {{ incident.code }} </td>

@@ -1,15 +1,18 @@
 
 var map;
 var app;
+var incidents;
+var crime_api_url;
+var incident_list;
 
 // default boundaries of St. Paul
-// corner1 = NW corner, corner2 = SE corner
 var corner1 = L.latLng(44.988019, -93.208612),
 	corner2 = L.latLng(44.890657, -93.004356),
 	cityLimits = L.latLngBounds(corner1,corner2);
     
 // when page loads, load: map, all vues
-function Init(crime_api_url) {
+function Init(api_url) {
+    crime_api_url = api_url;
     // create map with set boundaries
     map = L.map('mapid',{
         maxBounds: cityLimits
@@ -37,7 +40,7 @@ function Init(crime_api_url) {
     });
     
     // add search function to map
-    map.addControl( 
+    map.addControl(
         new L.Control.Search({
             url: 'https://nominatim.openstreetmap.org/search?format=json&q={s}',
             jsonpParam: 'json_callback',
@@ -48,14 +51,78 @@ function Init(crime_api_url) {
             autoCollapse: true,
             autoType: false,
             minLength: 2
-        }) 
+        })
     );
+    
+    
+    incident_list = new Vue({
+        el: '#incident-list',
+        data: {
+            incidents: {},
+            bounds: new LatLngBounds()
+        }
+        /*
+        ,
+        computed: {
+            viewable_incidents: function() {
+                for (var incident in this.incidents) {
+                    // replace the last X of the address number with a 0
+                    let address = data[incident].block.replace("X", "0");
+                    console.log(address);
+                    // searches for the address inside the provided bounds, returns JSON
+                    $.getJSON("https://nominatim.openstreetmap.org/search?q=" + address + "&format=json&viewbox=" +
+                               bounds.getWest() + "," + 
+                               bounds.getNorth() + "," + 
+                               bounds.getEast() + "," + 
+                               bounds.getSouth() + "," + 
+                               "&bounded=1", 
+                    (data) => {
+                        console.log(data);
+                    });
+                }
+                return incidents;
+            }
+        }
+        */
+    });
 
-    $.getJSON(crime_api_url + "/incidents", (data)=>{
-		console.log(data);
+	// get incident data from api, populate vue
+	
+    
+	$.getJSON(crime_api_url + "/incidents?start_date=2019-10-01&end_date=2019-10-31", (data)=> {
+        incident_list.incidents = data;
+        console.log(incident_list.incidents);  
 	});
     
+    //console.log(getIncidents(corner1, corner2));
+
 }
+
+/*
+map.on("moveend", function() {
+    incident_list.bounds = L.getBounds();
+});
+
+map.on("zoomend", function() {
+    incident_list.bounds = L.getBounds();
+});
+
+function getIncidents(corner1, corner2) {
+	let incidents = [];
+    console.log(data);
+    for (var incident in data) {
+        // replace the last X of the address number with a 0
+        let address = data[incident].block.replace("X", "0");
+        console.log(address);
+        // searches for the address inside the provided bounds, returns JSON
+        $.getJSON("https://nominatim.openstreetmap.org/search?q=" + address + "&format=json&viewbox=" +
+        corner1.lat + "," + corner1.lng + "," + corner2.lat + "," + corner2.lng + "," + "&bounded=1", (data) => {
+            console.log(data);
+        });
+    }
+    return incidents;
+}
+*/
 
 /*
 var incident = {
