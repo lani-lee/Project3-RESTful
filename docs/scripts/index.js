@@ -58,60 +58,60 @@ function Init(api_url) {
     // add markers to map
     // Saint Anthony Park
 
-    L.marker([44.939038,-93.015913]).addTo(map);//BattleCreek
+    L.marker([44.939038,-93.015913]).bindPopup("N1").addTo(map);//BattleCreek
     L.marker([44.969908, -93.197343],
     {   //icon: L.circleMarker([0,0],{radius:30})
-    }).addTo(map);
+    }).bindPopup("N12").addTo(map);
 	
 	L.marker([44.981086,-93.024898],//GreaterEastSide
 	{
-	}).addTo(map);
+	}).bindPopup("N2").addTo(map);
 	L.marker([44.929603,-93.083709],//EastSide
 	{
-	}).addTo(map);
+	}).bindPopup("N3").addTo(map);
 	L.marker([44.959407,-93.056327],//DaytonBluff
 	{
-	}).addTo(map);
+	}).bindPopup("N4").addTo(map);
 	L.marker([44.978094,-93.067305],//Payne/Phalen
 	{
-	}).addTo(map);
+	}).bindPopup("N5").addTo(map);
 	L.marker([44.976429, -93.108051],//NorthEnd
 	{
-	}).addTo(map);
+	}).bindPopup("N6").addTo(map);
 	L.marker([44.960303, -93.119727],//Thomas/FrogTown
 	{
-	}).addTo(map);
+	}).bindPopup("N7").addTo(map);
 	L.marker([44.952346, -93.129301],//Summit-University
 	{
-	}).addTo(map);
+	}).bindPopup("N8").addTo(map);
 	L.marker([44.932281, -93.120426],//West-7th
 	{
-	}).addTo(map);
+	}).bindPopup("N9").addTo(map);
 	L.marker([44.983644, -93.147154],//Como
 	{
-	}).addTo(map);
+	}).bindPopup("N10").addTo(map);
 	L.marker([44.962879, -93.166564],//Mid-way/Hamline
 	{
-	}).addTo(map);	
+	}).bindPopup("N11").addTo(map);
 	L.marker([44.949160, -93.172167],//Union-Park
 	{
-	}).addTo(map);
+	}).bindPopup("N13").addTo(map);
 	
 	L.marker([44.936545, -93.178968],//Macalster-GroveLand
 	{
-	}).addTo(map);
+	}).bindPopup("N14").addTo(map);
 	
 	L.marker([44.911447, -93.173530],//Highland
 	{
-	}).addTo(map);
+	}).bindPopup("N15").addTo(map);
 	
 	L.marker([44.937675, -93.137083],//summitHall
 	{
-	}).addTo(map);
+	}).bindPopup("N16").addTo(map);
 	
 	L.marker([44.948875, -93.093550],//Capitol-river
 	{
-	}).addTo(map);
+	}).bindPopup("N17").addTo(map);
     
     incident_list = new Vue({
         el: '#incident-list',
