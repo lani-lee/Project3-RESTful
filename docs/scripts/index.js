@@ -5,6 +5,9 @@ var crime_api_url;
 var incident_list;
 var neighborhood;
 
+
+
+
 // default boundaries of St. Paul
 var corner1 = L.latLng(44.988019, -93.208612),
 	corner2 = L.latLng(44.890657, -93.004356),
@@ -38,17 +41,54 @@ function Init(api_url) {
         //shadowAnchor: [4, 62],  // the same for the shadow
         popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
     });
-    
+  //using search plug in from leaflet plug in derived from github
+  //
+      var geocoder = L.Control.Geocoder.nominatim();
+      if (URLSearchParams && location.search) {
+        // parse /?geocoder=nominatim from URL
+        var params = new URLSearchParams(location.search);
+        var geocoderString = params.get('geocoder');
+        if (geocoderString && L.Control.Geocoder[geocoderString]) {
+          console.log('Using geocoder', geocoderString);
+          geocoder = L.Control.Geocoder[geocoderString]();
+        } else if (geocoderString) {
+          console.warn('Unsupported geocoder', geocoderString);
+        }
+      }
+      var control = L.Control.geocoder({
+        geocoder: geocoder
+      }).addTo(map);
+      var marker;
+	  map.on('click', function(e) {
+        geocoder.reverse(e.latlng, map.options.crs.scale(map.getZoom()), function(results) {
+          var r = results[0];
+          if (r) {
+            if (marker) {
+              marker
+                .setLatLng(r.center)
+                .setPopupContent(r.html || r.name)
+                .openPopup();
+            } else {
+              marker = L.marker(r.center)
+                .bindPopup(r.name)
+                .addTo(map)
+                .openPopup();
+            }
+          }
+        });
+      });
+	  
+	  
     // add search function to map
-    map.addControl(
+    /*map.addControl(
         new L.Control.Search({
-            url: 'https://nominatim.openstreetmap.org/search?format=json&q={s}',
+            url: 'https://nominatim.openstreetmap.org/search?format=json&q={s}',function(){
+			},
             jsonpParam: 'json_callback',
             propertyName: 'display_name',
             propertyLoc: ['lat','lon'],
 			moveToLocation: function(latlng, title, map){
 				map.setView(latlng,15);
-				console.log(zoom);
 			},
             //marker: L.circleMarker([0,0],{radius:30}),
             marker: pointerIcon,
@@ -56,72 +96,20 @@ function Init(api_url) {
             autoType: false,
             minLength: 2
         })
-    );
+    );*/
     
     // add markers to map
     // Saint Anthony Park
 
-    L.marker([44.939038,-93.015913]).bindPopup("N1").addTo(map);//BattleCreek
-    L.marker([44.969908, -93.197343],
-    {   //icon: L.circleMarker([0,0],{radius:30})
-    }).bindPopup("N12").addTo(map);
-	
-	L.marker([44.981086,-93.024898],//GreaterEastSide
-	{
-	}).bindPopup("N2").addTo(map);
-	L.marker([44.929603,-93.083709],//EastSide
-	{
-	}).bindPopup("N3").addTo(map);
-	L.marker([44.959407,-93.056327],//DaytonBluff
-	{
-	}).bindPopup("N4").addTo(map);
-	L.marker([44.978094,-93.067305],//Payne/Phalen
-	{
-	}).bindPopup("N5").addTo(map);
-	L.marker([44.976429, -93.108051],//NorthEnd
-	{
-	}).bindPopup("N6").addTo(map);
-	L.marker([44.960303, -93.119727],//Thomas/FrogTown
-	{
-	}).bindPopup("N7").addTo(map);
-	L.marker([44.952346, -93.129301],//Summit-University
-	{
-	}).bindPopup("N8").addTo(map);
-	L.marker([44.932281, -93.120426],//West-7th
-	{
-	}).bindPopup("N9").addTo(map);
-	L.marker([44.983644, -93.147154],//Como
-	{
-	}).bindPopup("N10").addTo(map);
-	L.marker([44.962879, -93.166564],//Mid-way/Hamline
-	{
-	}).bindPopup("N11").addTo(map);
-	L.marker([44.949160, -93.172167],//Union-Park
-	{
-	}).bindPopup("N13").addTo(map);
-	
-	L.marker([44.936545, -93.178968],//Macalster-GroveLand
-	{
-	}).bindPopup("N14").addTo(map);
-	
-	L.marker([44.911447, -93.173530],//Highland
-	{
-	}).bindPopup("N15").addTo(map);
-	
-	L.marker([44.937675, -93.137083],//summitHall
-	{
-	}).bindPopup("N16").addTo(map);
-	
-	L.marker([44.948875, -93.093550],//Capitol-river
-	{
-	}).bindPopup("N17").addTo(map);
+    
     
     incident_list = new Vue({
         el: '#incident-list',
         data: {
             incidents: {},
             neighborhoods: {},
-            codes: {}
+            codes: {},
+			neighborhood_crimes: new Array(17)
             //bounds: new LatLngBounds()
         }
         /*
@@ -155,7 +143,64 @@ function Init(api_url) {
     
 	$.getJSON(crime_api_url + "/incidents?start_date=2019-10-01&end_date=2019-10-31", (data)=> {
         incident_list.incidents = data;
-        console.log(incident_list.incidents);  
+		for (var i in incident_list.incidents) {
+		incident_list.neighborhood_crimes[incident_list.incidents[i].neighborhood_number-1]+=1;
+		}
+		L.marker([44.939038,-93.015913]).bindPopup("N1: \n Number of Crimes: "+incident_list.neighborhood_crimes[0]).addTo(map);//BattleCreek
+	L.marker([44.969908, -93.197343],
+	{   //icon: L.circleMarker([0,0],{radius:30})
+	}).bindPopup("N12:\n Number of Crimes: "+incident_list.neighborhood_crimes[11]).addTo(map);
+	
+	L.marker([44.981086,-93.024898],//GreaterEastSide
+	{
+	}).bindPopup("N2: \n Number of Crimes: "+incident_list.neighborhood_crimes[1]).addTo(map);
+	L.marker([44.929603,-93.083709],//EastSide
+	{
+	}).bindPopup("N3: \n Number of Crimes: "+incident_list.neighborhood_crimes[2]).addTo(map);
+	L.marker([44.959407,-93.056327],//DaytonBluff
+	{
+	}).bindPopup("N4: \n Number of Crimes: "+incident_list.neighborhood_crimes[3]).addTo(map);
+	L.marker([44.978094,-93.067305],//Payne/Phalen
+	{
+	}).bindPopup("N5: \n Number of Crimes: "+incident_list.neighborhood_crimes[4]).addTo(map);
+	L.marker([44.976429, -93.108051],//NorthEnd
+	{
+	}).bindPopup("N6: \n Number of Crimes: "+incident_list.neighborhood_crimes[5]).addTo(map);
+	L.marker([44.960303, -93.119727],//Thomas/FrogTown
+	{
+	}).bindPopup("N7: \n Number of Crimes: "+incident_list.neighborhood_crimes[6]).addTo(map);
+	L.marker([44.952346, -93.129301],//Summit-University
+	{
+	}).bindPopup("N8:\n Number of Crimes: "+incident_list.neighborhood_crimes[7]).addTo(map);
+	L.marker([44.932281, -93.120426],//West-7th
+	{
+	}).bindPopup("N9:\n Number of Crimes: "+incident_list.neighborhood_crimes[8]).addTo(map);
+	L.marker([44.983644, -93.147154],//Como
+	{
+	}).bindPopup("N10: \n Number of Crimes: "+incident_list.neighborhood_crimes[9]).addTo(map);
+	L.marker([44.962879, -93.166564],//Mid-way/Hamline
+	{
+	}).bindPopup("N11: \n Number of Crimes: "+incident_list.neighborhood_crimes[10]).addTo(map);
+	L.marker([44.949160, -93.172167],//Union-Park
+	{
+	}).bindPopup("N13: \n Number of Crimes: "+incident_list.neighborhood_crimes[12]).addTo(map);
+	
+	L.marker([44.936545, -93.178968],//Macalster-GroveLand
+	{
+	}).bindPopup("N14: \n Number of Crimes: "+incident_list.neighborhood_crimes[13]).addTo(map);
+	
+	L.marker([44.911447, -93.173530],//Highland
+	{
+	}).bindPopup("N15:\n Number of Crimes: "+incident_list.neighborhood_crimes[14]).addTo(map);
+	
+	L.marker([44.937675, -93.137083],//summitHall
+	{
+	}).bindPopup("N16:\n Number of Crimes: "+incident_list.neighborhood_crimes[15]).addTo(map);
+	
+	L.marker([44.948875, -93.093550],//Capitol-river
+	{
+	}).bindPopup("N17: \n Number of Crimes: "+incident_list.neighborhood_crimes[16]).addTo(map);
+	
 	});
     
     $.getJSON(crime_api_url + "/neighborhoods", (data)=> {
@@ -165,6 +210,15 @@ function Init(api_url) {
     $.getJSON(crime_api_url + "/codes", (data)=> {
          incident_list.codes = data;
 	});
+	
+	
+	for (let i =0;i<17;i++)
+	{
+		incident_list.neighborhood_crimes[i]=0;
+	}
+	
+
+	
 	/*$('.table > tbody > tr').click(function(data) {
 		
 		console.log(data);
