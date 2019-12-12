@@ -5,8 +5,8 @@
 		height: 500px;		
 		}
 		
-.incidents-table{
+#incident-list{
    overflow-y:scroll;
-   height:100px;
+   height:300px;
    display:block;
 }
