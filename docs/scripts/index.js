@@ -1,4 +1,3 @@
-
 var map;
 var app;
 var incidents;
@@ -47,6 +46,9 @@ function Init(api_url) {
             jsonpParam: 'json_callback',
             propertyName: 'display_name',
             propertyLoc: ['lat','lon'],
+			moveToLocation: function(latlng, title, map){
+				map.setView(latlng,7);
+			},
             //marker: L.circleMarker([0,0],{radius:30}),
             marker: pointerIcon,
             autoCollapse: true,
@@ -169,16 +171,31 @@ function Init(api_url) {
     //console.log(getIncidents(corner1, corner2));
 
 }
+  map.addControl(
+        new L.Control.Search({
+            url: 'https://nominatim.openstreetmap.org/search?format=json&q={s}',
+            jsonpParam: 'json_callback',
+            propertyName: 'display_name',
+            propertyLoc: ['lat','lon'],
+			moveToLocation: function(latlng, title, map){
+				map.setView(latlng,7);
+			},
+            //marker: L.circleMarker([0,0],{radius:30}),
+            marker: pointerIcon,
+            autoCollapse: true,
+            autoType: false,
+            minLength: 2
+        })
+    );
+    
 
 /*
 map.on("moveend", function() {
     incident_list.bounds = L.getBounds();
 });
-
 map.on("zoomend", function() {
     incident_list.bounds = L.getBounds();
 });
-
 function getIncidents(corner1, corner2) {
 	let incidents = [];
     console.log(data);
@@ -230,11 +247,6 @@ var incidentTable = {
         }))
     }
 };
-
 //var incidentTable = require("./views/incidentTable.js")
-
-
-
 //m.render(document.body, "hello world")
-
 m.mount(document.body, incidentTable)// m.mount renders the specified components into a DOM element*/
