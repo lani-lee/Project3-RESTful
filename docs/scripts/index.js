@@ -165,7 +165,12 @@ function Init(api_url) {
     $.getJSON(crime_api_url + "/codes", (data)=> {
          incident_list.codes = data;
 	});
-	
+	/*$('.table > tbody > tr').click(function(data) {
+		
+		console.log(data);
+		
+    // row was clicked
+});*/ // ask dr.Marninnin
 	
 	
     
