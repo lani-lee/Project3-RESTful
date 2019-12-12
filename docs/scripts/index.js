@@ -78,7 +78,6 @@ function Init(api_url) {
         });
       });
 	  
-	  
     // add search function to map
     /*map.addControl(
         new L.Control.Search({
@@ -98,11 +97,6 @@ function Init(api_url) {
         })
     );*/
     
-    // add markers to map
-    // Saint Anthony Park
-
-    
-    
     incident_list = new Vue({
         el: '#incident-list',
         data: {
@@ -111,6 +105,11 @@ function Init(api_url) {
             codes: {},
 			neighborhood_crimes: new Array(17)
             //bounds: new LatLngBounds()
+        },
+        methods: {
+               selectRow(event) {
+                   console.log(event.target.document.getElementById("block"));
+               }
         }
         /*
         ,
@@ -139,68 +138,66 @@ function Init(api_url) {
     
 
 	// get incident data from api, populate vue
-	
-    
 	$.getJSON(crime_api_url + "/incidents?start_date=2019-10-01&end_date=2019-10-31", (data)=> {
         incident_list.incidents = data;
+        // count crimes in each neighborhood and adds the total to the correct marker
 		for (var i in incident_list.incidents) {
 		incident_list.neighborhood_crimes[incident_list.incidents[i].neighborhood_number-1]+=1;
 		}
 		L.marker([44.939038,-93.015913]).bindPopup("N1: \n Number of Crimes: "+incident_list.neighborhood_crimes[0]).addTo(map);//BattleCreek
-	L.marker([44.969908, -93.197343],
-	{   //icon: L.circleMarker([0,0],{radius:30})
-	}).bindPopup("N12:\n Number of Crimes: "+incident_list.neighborhood_crimes[11]).addTo(map);
-	
-	L.marker([44.981086,-93.024898],//GreaterEastSide
-	{
-	}).bindPopup("N2: \n Number of Crimes: "+incident_list.neighborhood_crimes[1]).addTo(map);
-	L.marker([44.929603,-93.083709],//EastSide
-	{
-	}).bindPopup("N3: \n Number of Crimes: "+incident_list.neighborhood_crimes[2]).addTo(map);
-	L.marker([44.959407,-93.056327],//DaytonBluff
-	{
-	}).bindPopup("N4: \n Number of Crimes: "+incident_list.neighborhood_crimes[3]).addTo(map);
-	L.marker([44.978094,-93.067305],//Payne/Phalen
-	{
-	}).bindPopup("N5: \n Number of Crimes: "+incident_list.neighborhood_crimes[4]).addTo(map);
-	L.marker([44.976429, -93.108051],//NorthEnd
-	{
-	}).bindPopup("N6: \n Number of Crimes: "+incident_list.neighborhood_crimes[5]).addTo(map);
-	L.marker([44.960303, -93.119727],//Thomas/FrogTown
-	{
-	}).bindPopup("N7: \n Number of Crimes: "+incident_list.neighborhood_crimes[6]).addTo(map);
-	L.marker([44.952346, -93.129301],//Summit-University
-	{
-	}).bindPopup("N8:\n Number of Crimes: "+incident_list.neighborhood_crimes[7]).addTo(map);
-	L.marker([44.932281, -93.120426],//West-7th
-	{
-	}).bindPopup("N9:\n Number of Crimes: "+incident_list.neighborhood_crimes[8]).addTo(map);
-	L.marker([44.983644, -93.147154],//Como
-	{
-	}).bindPopup("N10: \n Number of Crimes: "+incident_list.neighborhood_crimes[9]).addTo(map);
-	L.marker([44.962879, -93.166564],//Mid-way/Hamline
-	{
-	}).bindPopup("N11: \n Number of Crimes: "+incident_list.neighborhood_crimes[10]).addTo(map);
-	L.marker([44.949160, -93.172167],//Union-Park
-	{
-	}).bindPopup("N13: \n Number of Crimes: "+incident_list.neighborhood_crimes[12]).addTo(map);
-	
-	L.marker([44.936545, -93.178968],//Macalster-GroveLand
-	{
-	}).bindPopup("N14: \n Number of Crimes: "+incident_list.neighborhood_crimes[13]).addTo(map);
-	
-	L.marker([44.911447, -93.173530],//Highland
-	{
-	}).bindPopup("N15:\n Number of Crimes: "+incident_list.neighborhood_crimes[14]).addTo(map);
-	
-	L.marker([44.937675, -93.137083],//summitHall
-	{
-	}).bindPopup("N16:\n Number of Crimes: "+incident_list.neighborhood_crimes[15]).addTo(map);
-	
-	L.marker([44.948875, -93.093550],//Capitol-river
-	{
-	}).bindPopup("N17: \n Number of Crimes: "+incident_list.neighborhood_crimes[16]).addTo(map);
-	
+        L.marker([44.969908, -93.197343],
+        {   //icon: L.circleMarker([0,0],{radius:30})
+        }).bindPopup("N12:\n Number of Crimes: "+incident_list.neighborhood_crimes[11]).addTo(map);
+        
+        L.marker([44.981086,-93.024898],//GreaterEastSide
+        {
+        }).bindPopup("N2: \n Number of Crimes: "+incident_list.neighborhood_crimes[1]).addTo(map);
+        L.marker([44.929603,-93.083709],//EastSide
+        {
+        }).bindPopup("N3: \n Number of Crimes: "+incident_list.neighborhood_crimes[2]).addTo(map);
+        L.marker([44.959407,-93.056327],//DaytonBluff
+        {
+        }).bindPopup("N4: \n Number of Crimes: "+incident_list.neighborhood_crimes[3]).addTo(map);
+        L.marker([44.978094,-93.067305],//Payne/Phalen
+        {
+        }).bindPopup("N5: \n Number of Crimes: "+incident_list.neighborhood_crimes[4]).addTo(map);
+        L.marker([44.976429, -93.108051],//NorthEnd
+        {
+        }).bindPopup("N6: \n Number of Crimes: "+incident_list.neighborhood_crimes[5]).addTo(map);
+        L.marker([44.960303, -93.119727],//Thomas/FrogTown
+        {
+        }).bindPopup("N7: \n Number of Crimes: "+incident_list.neighborhood_crimes[6]).addTo(map);
+        L.marker([44.952346, -93.129301],//Summit-University
+        {
+        }).bindPopup("N8:\n Number of Crimes: "+incident_list.neighborhood_crimes[7]).addTo(map);
+        L.marker([44.932281, -93.120426],//West-7th
+        {
+        }).bindPopup("N9:\n Number of Crimes: "+incident_list.neighborhood_crimes[8]).addTo(map);
+        L.marker([44.983644, -93.147154],//Como
+        {
+        }).bindPopup("N10: \n Number of Crimes: "+incident_list.neighborhood_crimes[9]).addTo(map);
+        L.marker([44.962879, -93.166564],//Mid-way/Hamline
+        {
+        }).bindPopup("N11: \n Number of Crimes: "+incident_list.neighborhood_crimes[10]).addTo(map);
+        L.marker([44.949160, -93.172167],//Union-Park
+        {
+        }).bindPopup("N13: \n Number of Crimes: "+incident_list.neighborhood_crimes[12]).addTo(map);
+        
+        L.marker([44.936545, -93.178968],//Macalster-GroveLand
+        {
+        }).bindPopup("N14: \n Number of Crimes: "+incident_list.neighborhood_crimes[13]).addTo(map);
+        
+        L.marker([44.911447, -93.173530],//Highland
+        {
+        }).bindPopup("N15:\n Number of Crimes: "+incident_list.neighborhood_crimes[14]).addTo(map);
+        
+        L.marker([44.937675, -93.137083],//summitHall
+        {
+        }).bindPopup("N16:\n Number of Crimes: "+incident_list.neighborhood_crimes[15]).addTo(map);
+        
+        L.marker([44.948875, -93.093550],//Capitol-river
+        {
+        }).bindPopup("N17: \n Number of Crimes: "+incident_list.neighborhood_crimes[16]).addTo(map);
 	});
     
     $.getJSON(crime_api_url + "/neighborhoods", (data)=> {
@@ -231,7 +228,6 @@ function Init(api_url) {
     //console.log(getIncidents(corner1, corner2));
 
 }
-    
 
 /*
 map.on("moveend", function() {

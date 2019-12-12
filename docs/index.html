@@ -66,7 +66,7 @@
                     <th>Block</th>
                 </thead>
                 <tbody>
-                    <tr v-for="(incident, key) in incidents">
+                    <tr v-for="(incident, key) in incidents" v-on:click="selectRow($event)">
                         <td> {{ key }} </td>
                         <td> {{ incident.date }} </td>
                         <td> {{ incident.time }} </td>
@@ -74,7 +74,7 @@
                         <td> {{ incident.incident }} </td>
                         <td> {{ incident.police_grid }} </td>
                         <td> {{ neighborhoods["N" + incident.neighborhood_number] }} </td>
-                        <td> {{ incident.block }} </td>
+                        <td id ='block'> {{ incident.block }} </td>
                     </tr>
                 </tbody>
             </table>
