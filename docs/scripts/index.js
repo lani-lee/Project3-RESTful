@@ -47,7 +47,8 @@ function Init(api_url) {
             propertyName: 'display_name',
             propertyLoc: ['lat','lon'],
 			moveToLocation: function(latlng, title, map){
-				map.setView(latlng,7);
+				map.setView(latlng,15);
+				console.log(zoom);
 			},
             //marker: L.circleMarker([0,0],{radius:30}),
             marker: pointerIcon,
@@ -171,22 +172,6 @@ function Init(api_url) {
     //console.log(getIncidents(corner1, corner2));
 
 }
-  map.addControl(
-        new L.Control.Search({
-            url: 'https://nominatim.openstreetmap.org/search?format=json&q={s}',
-            jsonpParam: 'json_callback',
-            propertyName: 'display_name',
-            propertyLoc: ['lat','lon'],
-			moveToLocation: function(latlng, title, map){
-				map.setView(latlng,7);
-			},
-            //marker: L.circleMarker([0,0],{radius:30}),
-            marker: pointerIcon,
-            autoCollapse: true,
-            autoType: false,
-            minLength: 2
-        })
-    );
     
 
 /*
