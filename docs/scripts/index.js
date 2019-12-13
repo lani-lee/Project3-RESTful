@@ -3,11 +3,21 @@ var app;
 var incidents;
 var crime_api_url;
 var incident_list;
+var incident_row;
 var neighborhood;
 var neighborhood_coords;
 var markers;
+// prefix of code
+// ex: C120 -> 2
+//     C9959 -> 99
+var crime_types = {
+    violent: [1, 2, 4, 8],
+    property: [3, 5, 6, 7, 9, 14],
+    other: [18, 26, 99]
+}
 
 markers = new Array();
+
 
 // default boundaries of St. Paul
 var corner1 = L.latLng(44.988019, -93.208612),
@@ -112,7 +122,6 @@ function Init(api_url) {
             codes: {},
 			neighborhood_crimes: new Array(17),
             visible_neighborhoods: new Array(17)
-            
         },
         computed: {
             
@@ -149,12 +158,25 @@ function Init(api_url) {
                     
                },
                 neighborhoodVisible(neighborhood_number){
-                   console.log(this.visible_neighborhoods[neighborhood_number-1]);
                    return (this.visible_neighborhoods[neighborhood_number-1]);   
                },
 			   updateTable() {
 				   this.$forceUpdate();
-			   }
+			   },
+               getBgColor(code) {
+                   var prefix = Math.floor(code/100);
+                   var color = {}
+                   if (crime_types.violent.indexOf(prefix) > -1) {
+                       color.backgroundColor = 'LightPink';
+                   }
+                   else if (crime_types.property.indexOf(prefix) > -1) {
+                       color.backgroundColor = 'LightCyan';
+                   }
+                   else {
+                       color.backgroundColor = 'PaleGreen';
+                   }
+                return color;
+            }
         }
     });
     
@@ -236,10 +258,8 @@ function Init(api_url) {
         incident_list.visible_neighborhoods[i] = true;
 	}	
     
-    //console.log(getIncidents(corner1, corner2));
-    
     map.on("moveend", function() {
-        document.getElementById('info').innerHTML =  map.getCenter();
+        document.getElementById('info').innerHTML =  "Current position: (" + map.getCenter().lat + ", " + map.getCenter().lng + ")";
         
         // change visible neighborhoods here when map moves
         for (var i = 0; i<neighborhood_coords.length; i++) {   
@@ -251,13 +271,7 @@ function Init(api_url) {
             }
         }
         incident_list.updateTable();
-        
-        //LatLngBounds.contains(LatLng)
-           
-        // incident_list.bounds = L.getBounds();
     });
-
-
 }
 
 

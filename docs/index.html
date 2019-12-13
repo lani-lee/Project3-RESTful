@@ -88,7 +88,7 @@
                     <th scope="col">Block</th>
                 </thead>
                 <tbody>
-                    <tr scope="row" v-for="(incident, key) in incidents" v-on:click="selectRow(incident.date, incident.time, incident.incident, incident.block)" v-if="neighborhoodVisible(incident.neighborhood_number)">
+                    <tr scope="row" id="incident-row" v-for="(incident, key) in incidents" v-on:click="selectRow(incident.date, incident.time, incident.incident, incident.block)" v-if="neighborhoodVisible(incident.neighborhood_number)" v-bind:style="getBgColor(incident.code)">
                         <td> {{ key }} </td>
                         <td> {{ incident.date }} </td>
                         <td> {{ incident.time }} </td>
