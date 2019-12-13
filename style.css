@@ -1,0 +1,69 @@
+#mapid {
+	height: 700px;
+	width:80%;
+	float:right;
+	margin: 20px auto;
+}
+		
+#incident-list{
+   overflow-y:scroll;
+   height:300px;
+   display:block;
+}
+#info {
+    display: block;
+    position: relative;
+    margin: 0px auto;
+    width: 50%;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    font-size: 12px;
+    text-align: center;
+    color: #3F71D2;
+    background: #fff;
+}
+
+#main-page {
+	width: 80%;
+	margin: 0 auto;
+	background-color: white;
+}
+
+#about-page {
+	width: 80%;
+	margin: 0 auto;
+	background-color: white;
+}
+
+#about {
+	width: 90%;
+	margin: 40px auto;
+}
+
+#team-members {
+	margin: 20px auto;
+}
+
+table {
+    float: none;
+    margin: 0 auto;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+}
+.flex-container > div {
+  margin: 10px;
+  
+  text-align: center;
+  line-height: 75px;
+  font-size: 30px;
+}
+#filter{
+	
+	  width: 18%;
+
+	float:left;
+}
