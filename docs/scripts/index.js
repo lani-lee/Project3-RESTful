@@ -6,6 +6,14 @@ var incident_list;
 var neighborhood;
 var neighborhood_coords;
 var markers;
+// prefix of code
+// ex: C120 -> 2
+//     C9959 -> 99
+var crime_types = {
+    violent: [1, 2, 4, 8],
+    property: [3, 5, 6, 7, 9, 14],
+    other: [18, 26, 99]
+}
 
 var latLong="Search...";
 
@@ -135,7 +143,6 @@ function Init(api_url) {
                         if (data !== undefined) {
                             var lat = data[0].lat;
                             var lon = data[0].lon;
-                            console.log(lat, lon)
 							let markerelement=document.createElement("div");
 							markerelement.textContent="Date: " + date + "Time: " + time + "Incident: " + incident;
 							let markerButton= document.createElement("button");
@@ -160,12 +167,25 @@ function Init(api_url) {
                     /*change to coords of address*/   
                },
                 neighborhoodVisible(neighborhood_number){
-                   console.log(this.visible_neighborhoods[neighborhood_number-1]);
                    return (this.visible_neighborhoods[neighborhood_number-1]);   
                },
 			   updateTable() {
 				   this.$forceUpdate();
-			   }
+			   },
+               getBgColor(code) {
+                   var prefix = Math.floor(code/100);
+                   var color = {}
+                   if (crime_types.violent.indexOf(prefix) > -1) {
+                       color.backgroundColor = 'LightPink';
+                   }
+                   else if (crime_types.property.indexOf(prefix) > -1) {
+                       color.backgroundColor = 'LightCyan';
+                   }
+                   else {
+                       color.backgroundColor = 'PaleGreen';
+                   }
+                return color;
+            }
         }
     });
     

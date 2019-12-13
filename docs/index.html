@@ -93,6 +93,16 @@
         </div>
         <pre id="info"></pre>
 
+        <div class="row">
+            <div>
+                <p style="background-color:LightPink">Violent Crimes</p>
+                
+                <p style="background-color:LightCyan">Property Crimes</p>
+                
+                <p style="background-color:PaleGreen">Other Crimes</p>
+            </div>
+        </div>
+        
         <div>   
             <table class="table" id='incident-list'>
                 <thead>
@@ -106,7 +116,7 @@
                     <th scope="col">Block</th>
                 </thead>
                 <tbody>
-                    <tr scope="row" v-for="(incident, key) in incidents" v-on:click="selectRow(incident.date, incident.time, incident.incident, incident.block)" v-if="neighborhoodVisible(incident.neighborhood_number)">
+                    <tr scope="row" v-for="(incident, key) in incidents" v-on:click="selectRow(incident.date, incident.time, incident.incident, incident.block)" v-if="neighborhoodVisible(incident.neighborhood_number)" v-bind:style="getBgColor(incident.code)">
                         <td> {{ key }} </td>
                         <td> {{ incident.date }} </td>
                         <td> {{ incident.time }} </td>
