@@ -52,7 +52,8 @@
             <label for="name">URL for St. Paul Crime API:</label>
             <input type="text" id="prompt_input" class="text ui-widget-content ui-corner-all" style="width: 320px;"/>
         </div>
-        
+        <pre id="info"></pre>
+
         <div>   
             <table id='incident-list'>
                 <thead>
@@ -66,7 +67,7 @@
                     <th>Block</th>
                 </thead>
                 <tbody>
-                    <tr v-for="(incident, key) in incidents" v-on:click="selectRow($event)">
+                    <tr v-for="(incident, key) in incidents" v-on:click="selectRow(incident.date, incident.time, incident.incident, incident.block)" v-if="neighborhoodVisible(incident.neighborhood_number)">
                         <td> {{ key }} </td>
                         <td> {{ incident.date }} </td>
                         <td> {{ incident.time }} </td>
@@ -74,7 +75,7 @@
                         <td> {{ incident.incident }} </td>
                         <td> {{ incident.police_grid }} </td>
                         <td> {{ neighborhoods["N" + incident.neighborhood_number] }} </td>
-                        <td id ='block'> {{ incident.block }} </td>
+                        <td> {{ incident.block }} </td>
                     </tr>
                 </tbody>
             </table>

@@ -4,9 +4,10 @@ var incidents;
 var crime_api_url;
 var incident_list;
 var neighborhood;
+var neighborhood_coords;
+var markers;
 
-
-
+markers = new Array();
 
 // default boundaries of St. Paul
 var corner1 = L.latLng(44.988019, -93.208612),
@@ -41,6 +42,10 @@ function Init(api_url) {
         //shadowAnchor: [4, 62],  // the same for the shadow
         popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
     });
+    
+    var crimeIcon = L.icon({
+       //iconUrl:  
+    });
   //using search plug in from leaflet plug in derived from github
   //
       var geocoder = L.Control.Geocoder.nominatim();
@@ -55,8 +60,10 @@ function Init(api_url) {
           console.warn('Unsupported geocoder', geocoderString);
         }
       }
+
+      // adds geocoder to map 
       var control = L.Control.geocoder({
-        geocoder: geocoder
+        geocoder: geocoder,
       }).addTo(map);
       var marker;
 	  map.on('click', function(e) {
@@ -103,52 +110,64 @@ function Init(api_url) {
             incidents: {},
             neighborhoods: {},
             codes: {},
-			neighborhood_crimes: new Array(17)
-            //bounds: new LatLngBounds()
+			neighborhood_crimes: new Array(17),
+            visible_neighborhoods: new Array(17)
+            
+        },
+        computed: {
+            
         },
         methods: {
-               selectRow(event) {
-                   console.log(event.target.document.getElementById("block"));
+               selectRow(date, time, incident, block) {
+                    // in address, change x to 0
+                    if (block.indexOf("X") > -1 && !isNaN(block.charAt(block.indexOf("X")-1))) {
+                        block = block.replace("X", "0");
+                    }
+                    console.log(block);
+                    // get coords of address
+                    $.getJSON("https://nominatim.openstreetmap.org/search/" + block + "?" + 
+                    "viewbox=-93.208612,44.988019,-93.004356,44.890657&bounded=1&format=json&limit=1", (data) => {
+                        console.log(data);
+                        if (data !== undefined) {
+                            var lat = data[0].lat;
+                            var lon = data[0].lon;
+                            console.log(lat, lon)
+                            let marker= new L.marker([lat, lon]);
+                            marker.bindPopup(
+                               "Date: " + date + "Time: " + time + "Incident: " + incident
+                            
+                            // add delete button
+                            )
+                            markers.push(marker);
+                            console.log(markers.length);
+                            map.addLayer(marker);
+                            map.flyTo([lat, lon], 18);
+                        }
+                    });
+                    
+                    /*change to coords of address*/
+                    
+               },
+                neighborhoodVisible(neighborhood_number){
+                   console.log(this.visible_neighborhoods[neighborhood_number-1]);
+                   return (this.visible_neighborhoods[neighborhood_number-1]);   
                }
         }
-        /*
-        ,
-        computed: {
-            viewable_incidents: function() {
-                for (var incident in this.incidents) {
-                    // replace the last X of the address number with a 0
-                    let address = data[incident].block.replace("X", "0");
-                    console.log(address);
-                    // searches for the address inside the provided bounds, returns JSON
-                    $.getJSON("https://nominatim.openstreetmap.org/search?q=" + address + "&format=json&viewbox=" +
-                               bounds.getWest() + "," + 
-                               bounds.getNorth() + "," + 
-                               bounds.getEast() + "," + 
-                               bounds.getSouth() + "," + 
-                               "&bounded=1", 
-                    (data) => {
-                        console.log(data);
-                    });
-                }
-                return incidents;
-            }
-        }
-        */
     });
     
+    neighborhood_coords = [[44.939038,-93.015913], [44.981086,-93.024898], [44.929603,-93.083709], [44.959407,-93.056327], [44.978094,-93.067305], [44.976429, -93.108051], [44.960303, -93.119727], [44.952346, -93.129301], [44.932281, -93.120426], [44.983644, -93.147154], [44.962879, -93.166564], [44.969908, -93.197343], [44.949160, -93.172167], [44.936545, -93.178968], [44.911447, -93.173530], [44.937675, -93.137083], [44.948875, -93.093550]];
 
 	// get incident data from api, populate vue
 	$.getJSON(crime_api_url + "/incidents?start_date=2019-10-01&end_date=2019-10-31", (data)=> {
         incident_list.incidents = data;
         // count crimes in each neighborhood and adds the total to the correct marker
 		for (var i in incident_list.incidents) {
-		incident_list.neighborhood_crimes[incident_list.incidents[i].neighborhood_number-1]+=1;
+            incident_list.neighborhood_crimes[incident_list.incidents[i].neighborhood_number-1]+=1;
 		}
-		L.marker([44.939038,-93.015913]).bindPopup("N1: \n Number of Crimes: "+incident_list.neighborhood_crimes[0]).addTo(map);//BattleCreek
-        L.marker([44.969908, -93.197343],
-        {   //icon: L.circleMarker([0,0],{radius:30})
-        }).bindPopup("N12:\n Number of Crimes: "+incident_list.neighborhood_crimes[11]).addTo(map);
         
+		L.marker([44.939038,-93.015913],//BattleCreek
+        {
+        }).bindPopup("N1: \n Number of Crimes: "+incident_list.neighborhood_crimes[0]).addTo(map);
         L.marker([44.981086,-93.024898],//GreaterEastSide
         {
         }).bindPopup("N2: \n Number of Crimes: "+incident_list.neighborhood_crimes[1]).addTo(map);
@@ -179,22 +198,21 @@ function Init(api_url) {
         L.marker([44.962879, -93.166564],//Mid-way/Hamline
         {
         }).bindPopup("N11: \n Number of Crimes: "+incident_list.neighborhood_crimes[10]).addTo(map);
+        L.marker([44.969908, -93.197343],
+        {
+        }).bindPopup("N12:\n Number of Crimes: "+incident_list.neighborhood_crimes[11]).addTo(map);
         L.marker([44.949160, -93.172167],//Union-Park
         {
         }).bindPopup("N13: \n Number of Crimes: "+incident_list.neighborhood_crimes[12]).addTo(map);
-        
         L.marker([44.936545, -93.178968],//Macalster-GroveLand
         {
         }).bindPopup("N14: \n Number of Crimes: "+incident_list.neighborhood_crimes[13]).addTo(map);
-        
         L.marker([44.911447, -93.173530],//Highland
         {
         }).bindPopup("N15:\n Number of Crimes: "+incident_list.neighborhood_crimes[14]).addTo(map);
-        
         L.marker([44.937675, -93.137083],//summitHall
         {
         }).bindPopup("N16:\n Number of Crimes: "+incident_list.neighborhood_crimes[15]).addTo(map);
-        
         L.marker([44.948875, -93.093550],//Capitol-river
         {
         }).bindPopup("N17: \n Number of Crimes: "+incident_list.neighborhood_crimes[16]).addTo(map);
@@ -212,27 +230,36 @@ function Init(api_url) {
 	for (let i =0;i<17;i++)
 	{
 		incident_list.neighborhood_crimes[i]=0;
-	}
-	
-
-	
-	/*$('.table > tbody > tr').click(function(data) {
-		
-		console.log(data);
-		
-    // row was clicked
-});*/ // ask dr.Marninnin
-	
-	
+        incident_list.visible_neighborhoods[i] = true;
+	}	
     
     //console.log(getIncidents(corner1, corner2));
+    
+    map.on("moveend", function() {
+        document.getElementById('info').innerHTML =  map.getCenter();
+        
+        // change visible neighborhoods here when map moves
+        for (var i = 0; i<neighborhood_coords.length; i++) {   
+            console.log(map.getBounds(), neighborhood_coords[i]);
+            if (map.getBounds().contains[neighborhood_coords[i]]) {
+                incident_list.visible_neighborhoods[i] = true;
+            }
+            else {
+                incident_list.visible_neighborhoods[i] = false;
+            }
+        }
+        console.log(incident_list.visible_neighborhoods);
+        
+       //LatLngBounds.contains(LatLng)
+           
+        // incident_list.bounds = L.getBounds();
+    });
+
 
 }
 
+
 /*
-map.on("moveend", function() {
-    incident_list.bounds = L.getBounds();
-});
 map.on("zoomend", function() {
     incident_list.bounds = L.getBounds();
 });
