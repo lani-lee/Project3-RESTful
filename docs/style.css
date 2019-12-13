@@ -1,9 +1,8 @@
 
-
-
 #mapid {
-		height: 500px;		
-		}
+	height: 500px;
+	margin: 20px auto;
+}
 		
 #incident-list{
    overflow-y:scroll;
@@ -23,3 +22,30 @@
     color: #3F71D2;
     background: #fff;
 }
+
+#main-page {
+	width: 80%;
+	margin: 0 auto;
+	background-color: white;
+}
+
+#about-page {
+	width: 80%;
+	margin: 0 auto;
+	background-color: white;
+}
+
+#about {
+	width: 90%;
+	margin: 40px auto;
+}
+
+#team-members {
+	margin: 20px auto;
+}
+
+table {
+    float: none;
+    margin: 0 auto;
+}
+

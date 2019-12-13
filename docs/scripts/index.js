@@ -151,7 +151,10 @@ function Init(api_url) {
                 neighborhoodVisible(neighborhood_number){
                    console.log(this.visible_neighborhoods[neighborhood_number-1]);
                    return (this.visible_neighborhoods[neighborhood_number-1]);   
-               }
+               },
+			   updateTable() {
+				   this.$forceUpdate();
+			   }
         }
     });
     
@@ -240,17 +243,16 @@ function Init(api_url) {
         
         // change visible neighborhoods here when map moves
         for (var i = 0; i<neighborhood_coords.length; i++) {   
-            console.log(map.getBounds(), neighborhood_coords[i]);
-            if (map.getBounds().contains[neighborhood_coords[i]]) {
+            if (map.getBounds().contains(neighborhood_coords[i])) {
                 incident_list.visible_neighborhoods[i] = true;
             }
             else {
                 incident_list.visible_neighborhoods[i] = false;
             }
         }
-        console.log(incident_list.visible_neighborhoods);
+        incident_list.updateTable();
         
-       //LatLngBounds.contains(LatLng)
+        //LatLngBounds.contains(LatLng)
            
         // incident_list.bounds = L.getBounds();
     });
@@ -258,50 +260,6 @@ function Init(api_url) {
 
 }
 
-
-/*
-map.on("zoomend", function() {
-    incident_list.bounds = L.getBounds();
-});
-function getIncidents(corner1, corner2) {
-	let incidents = [];
-    console.log(data);
-    for (var incident in data) {
-        // replace the last X of the address number with a 0
-        let address = data[incident].block.replace("X", "0");
-        console.log(address);
-        // searches for the address inside the provided bounds, returns JSON
-        $.getJSON("https://nominatim.openstreetmap.org/search?q=" + address + "&format=json&viewbox=" +
-        corner1.lat + "," + corner1.lng + "," + corner2.lat + "," + corner2.lng + "," + "&bounded=1", (data) => {
-            console.log(data);
-        });
-    }
-    return incidents;
-}
-*/
-
-/*
-var incident = {
-    list: [],
-    loadList: function() {
-		// hear this function load list calls from the restful api as a promise function to gather data from the api
-        return m.request({
-            method: "GET",
-            url: "http://localhost:8000/incidents",
-            withCredentials: false,
-        })
-		//promise has been completed result.data is a json
-        .then(function(result) {
-			incident.list=[]
-			for(let i  in result)
-			{
-				incident.list.push(result[i]);
-			}
-            //incident.list = result
-        })
-    },
-};
-*/
 
 //overwritting over the map need to figure that out
 /*
