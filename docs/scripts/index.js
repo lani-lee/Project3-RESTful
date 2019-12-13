@@ -35,7 +35,7 @@ function Init(api_url) {
     // adds base layer to map
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-		minZoom: 13,
+		minZoom: 11,
 		maxZoom: 18,
 		id:'mapbox/streets-v11',
 		accessToken:'pk.eyJ1IjoiYW11ZDY5ODEiLCJhIjoiY2szdXltcGtjMDU5djNobHBqMzk4eG0zeCJ9.BsZLJkCaw2Bui_sh7DmdgQ'
@@ -141,21 +141,28 @@ function Init(api_url) {
                             var lat = data[0].lat;
                             var lon = data[0].lon;
                             console.log(lat, lon)
+							let markerelement=document.createElement("div");
+							markerelement.textContent="Date: " + date + "Time: " + time + "Incident: " + incident;
+							let markerButton= document.createElement("button");
+							markerButton.textContent="Delete";
+
+							markerButton.type="button";
+							markerelement.appendChild(markerButton);
                             let marker= new L.marker([lat, lon]);
                             marker.bindPopup(
-                               "Date: " + date + "Time: " + time + "Incident: " + incident
-                            
+                            markerelement
                             // add delete button
                             )
-                            markers.push(marker);
                             console.log(markers.length);
                             map.addLayer(marker);
                             map.flyTo([lat, lon], 18);
+							markerButton.onclick= function(){
+								map.removeLayer(marker);
+							};
                         }
                     });
                     
-                    /*change to coords of address*/
-                    
+                    /*change to coords of address*/   
                },
                 neighborhoodVisible(neighborhood_number){
                    return (this.visible_neighborhoods[neighborhood_number-1]);   
