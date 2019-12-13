@@ -65,8 +65,26 @@
 			</div>
 		</nav>
 		
-		
-	
+<div class="flex-container" id ="filter">
+<h1> Filters: </h1>
+<form action ="onclick">
+  <div id ="checkBox">
+  <input type="checkbox" name="vehicle1" value="Robbery">Robbery<br>
+  <input type="checkbox" name="vehicle2" value="Murder"> Murder<br>
+  <input type="checkbox" name="vehicle3" value="Rape"> Rape<br>
+  <input type="checkbox" name="vehicle4" value="Aggrevated Assult"> Aggrevated Assult<br>
+  <input type="checkbox" name="vehicle5" value="Burglary"> Burglary<br>
+  <input type="checkbox" name="vehicle6" value="Theft"> Theft<br>
+  <input type="checkbox" name="vehicle7" value="Narcotics"> Narcotics<br><br>
+  </div>
+  <div id ="datetimeInput">
+	  date: <input type="date" name="date">
+	  time: <input type="time" name="time">
+  </div>
+  <div>3</div> 
+   <input type="submit" value="Submit">
+</form>  
+</div>
         <div id="mapid"></div>
         
         <div id="dialog-form">
@@ -88,7 +106,7 @@
                     <th scope="col">Block</th>
                 </thead>
                 <tbody>
-                    <tr scope="row" id="incident-row" v-for="(incident, key) in incidents" v-on:click="selectRow(incident.date, incident.time, incident.incident, incident.block)" v-if="neighborhoodVisible(incident.neighborhood_number)" v-bind:style="getBgColor(incident.code)">
+                    <tr scope="row" v-for="(incident, key) in incidents" v-on:click="selectRow(incident.date, incident.time, incident.incident, incident.block)" v-if="neighborhoodVisible(incident.neighborhood_number)">
                         <td> {{ key }} </td>
                         <td> {{ incident.date }} </td>
                         <td> {{ incident.time }} </td>
