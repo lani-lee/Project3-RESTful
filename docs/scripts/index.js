@@ -24,9 +24,99 @@ var corner1 = L.latLng(44.988019, -93.208612),
 	corner2 = L.latLng(44.890657, -93.004356),
 	cityLimits = L.latLngBounds(corner1,corner2);
     
+function Prompt() {
+	$("#dialog-form").dialog({
+		autoOpen: true,
+		modal: true,
+		width: "360px",
+		buttons: {
+			"Ok": function() {
+				var prompt_input = $("#prompt_input");
+				Init(prompt_input.val());
+				$(this).dialog("close");
+			},
+			"Cancel": function() {
+				$(this).dialog("close");
+			}
+		}
+	});
+}
 // when page loads, load: map, all vues
 function Init(api_url) {
     crime_api_url = api_url;
+	incident_list = new Vue({
+        el: '#Vue',
+        data: {
+            incidents: {},
+            neighborhoods: {},
+            codes: {},
+			neighborhood_crimes: new Array(17),
+            visible_neighborhoods: new Array(17),
+			Robbery: true;
+            
+        },
+        computed: {
+            
+        },
+        methods: {
+               selectRow(date, time, incident, block) {
+                    // in address, change x to 0
+                    if (block.indexOf("X") > -1 && !isNaN(block.charAt(block.indexOf("X")-1))) {
+                        block = block.replace("X", "0");
+                    }
+                    console.log(block);
+                    // get coords of address
+                    $.getJSON("https://nominatim.openstreetmap.org/search/" + block + "?" + 
+                    "viewbox=-93.208612,44.988019,-93.004356,44.890657&bounded=1&format=json&limit=1", (data) => {
+                        console.log(data);
+                        if (data !== undefined) {
+                            var lat = data[0].lat;
+                            var lon = data[0].lon;
+							let markerelement=document.createElement("div");
+							markerelement.textContent="Date: " + date + "Time: " + time + "Incident: " + incident;
+							let markerButton= document.createElement("button");
+							markerButton.textContent="Delete";
+
+							markerButton.type="button";
+							markerelement.appendChild(markerButton);
+                            let marker= new L.marker([lat, lon]);
+                            marker.bindPopup(
+                            markerelement
+                            // add delete button
+                            )
+                            console.log(markers.length);
+                            map.addLayer(marker);
+                            map.flyTo([lat, lon], 18);
+							markerButton.onclick= function(){
+								map.removeLayer(marker);
+							};
+                        }
+                    });
+                    
+                    /*change to coords of address*/   
+               },
+                neighborhoodVisible(neighborhood_number){
+                   return (this.visible_neighborhoods[neighborhood_number-1]);   
+               },
+			   updateTable() {
+				   this.$forceUpdate();
+			   },
+               getBgColor(code) {
+                   var prefix = Math.floor(code/100);
+                   var color = {}
+                   if (crime_types.violent.indexOf(prefix) > -1) {
+                       color.backgroundColor = 'LightPink';
+                   }
+                   else if (crime_types.property.indexOf(prefix) > -1) {
+                       color.backgroundColor = 'LightCyan';
+                   }
+                   else {
+                       color.backgroundColor = 'PaleGreen';
+                   }
+                return color;
+            }
+        }
+    });
     // create map with set boundaries
     map = L.map('mapid',{
         maxBounds: cityLimits
@@ -116,78 +206,7 @@ function Init(api_url) {
         })
     );*/
     
-    incident_list = new Vue({
-        el: '#incident-list',
-        data: {
-            incidents: {},
-            neighborhoods: {},
-            codes: {},
-			neighborhood_crimes: new Array(17),
-            visible_neighborhoods: new Array(17)
-            
-        },
-        computed: {
-            
-        },
-        methods: {
-               selectRow(date, time, incident, block) {
-                    // in address, change x to 0
-                    if (block.indexOf("X") > -1 && !isNaN(block.charAt(block.indexOf("X")-1))) {
-                        block = block.replace("X", "0");
-                    }
-                    console.log(block);
-                    // get coords of address
-                    $.getJSON("https://nominatim.openstreetmap.org/search/" + block + "?" + 
-                    "viewbox=-93.208612,44.988019,-93.004356,44.890657&bounded=1&format=json&limit=1", (data) => {
-                        console.log(data);
-                        if (data !== undefined) {
-                            var lat = data[0].lat;
-                            var lon = data[0].lon;
-							let markerelement=document.createElement("div");
-							markerelement.textContent="Date: " + date + "Time: " + time + "Incident: " + incident;
-							let markerButton= document.createElement("button");
-							markerButton.textContent="Delete";
-
-							markerButton.type="button";
-							markerelement.appendChild(markerButton);
-                            let marker= new L.marker([lat, lon]);
-                            marker.bindPopup(
-                            markerelement
-                            // add delete button
-                            )
-                            console.log(markers.length);
-                            map.addLayer(marker);
-                            map.flyTo([lat, lon], 18);
-							markerButton.onclick= function(){
-								map.removeLayer(marker);
-							};
-                        }
-                    });
-                    
-                    /*change to coords of address*/   
-               },
-                neighborhoodVisible(neighborhood_number){
-                   return (this.visible_neighborhoods[neighborhood_number-1]);   
-               },
-			   updateTable() {
-				   this.$forceUpdate();
-			   },
-               getBgColor(code) {
-                   var prefix = Math.floor(code/100);
-                   var color = {}
-                   if (crime_types.violent.indexOf(prefix) > -1) {
-                       color.backgroundColor = 'LightPink';
-                   }
-                   else if (crime_types.property.indexOf(prefix) > -1) {
-                       color.backgroundColor = 'LightCyan';
-                   }
-                   else {
-                       color.backgroundColor = 'PaleGreen';
-                   }
-                return color;
-            }
-        }
-    });
+    
     
     neighborhood_coords = [[44.939038,-93.015913], [44.981086,-93.024898], [44.929603,-93.083709], [44.959407,-93.056327], [44.978094,-93.067305], [44.976429, -93.108051], [44.960303, -93.119727], [44.952346, -93.129301], [44.932281, -93.120426], [44.983644, -93.147154], [44.962879, -93.166564], [44.969908, -93.197343], [44.949160, -93.172167], [44.936545, -93.178968], [44.911447, -93.173530], [44.937675, -93.137083], [44.948875, -93.093550]];
 
