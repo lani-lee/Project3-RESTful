@@ -28,7 +28,7 @@
     <!-- End: Prompt JavaScript -->
     </head>
 
-    <body id="main-page" onload="Prompt2()">
+    <body id="main-page" onload="Prompt()">
 
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<a class="navbar-brand" href="#"></a>
@@ -51,22 +51,26 @@
 <h1> Filters: </h1>
 <form action ="onclick">
   <div id ="checkBox">
-  <input type="checkbox" name="vehicle1" value="Robbery">Robbery<br>
-  <input type="checkbox" name="vehicle2" value="Murder"> Murder<br>
-  <input type="checkbox" name="vehicle3" value="Rape"> Rape<br>
-  <input type="checkbox" name="vehicle4" value="Aggrevated Assult"> Aggrevated Assult<br>
-  <input type="checkbox" name="vehicle5" value="Burglary"> Burglary<br>
-  <input type="checkbox" name="vehicle6" value="Theft"> Theft<br>
-  <input type="checkbox" name="vehicle7" value="Narcotics"> Narcotics<br><br>
+  <input type="checkbox" value="Robbery" v-model="Robbery">Robbery<br>
+  <input type="checkbox" value="Murder" v-model="Murder"> Murder<br>
+  <input type="checkbox" value="Rape" v-model ="Rape"> Rape<br>
+  <input type="checkbox" value="Vandalism" v-model="Vandalism"> Vandalism<br>
+  <input type="checkbox" value="Burglary" v-model="Burglary"> Burglary<br>
+  <input type="checkbox" value="Theft" v-model="Theft"> Theft<br>
+  <input type="checkbox" value="Narcotics" v-model="Narcotics"> Narcotics<br><br>
   </div>
-  <div id ="datetimeInput">
-	  startDate: <input type="date" name="date">
-	  endDate: <input type="date" name="date">
+  <div id ="Neighborhood">
+		
+  </div>
+  <div id ="dateInput">
 	  StartTime: <input type="time" name="time">
-	  EndTime: <input type="time" name="time">
+	  EndTime: <input type="time" name="time"><br>
   </div>
-  <div>3</div> 
-   <input type="submit" value="Submit">
+  <div>
+  	  startDate: <input type="date" name="date">
+	  endDate: <input type="date" name="date">
+	    <input type="submit" value="Submit">
+  </div> 
 </form>  
 </div>
         <div id="mapid"></div>
@@ -100,7 +104,7 @@
                     <th scope="col">Block</th>
                 </thead>
                 <tbody>
-                    <tr scope="row" v-for="(incident, key) in incidents" v-on:click="selectRow(incident.date, incident.time, incident.incident, incident.block)" v-if="neighborhoodVisible(incident.neighborhood_number)&& Robbery" v-bind:style="getBgColor(incident.code)">
+                    <tr scope="row" v-for="(incident, key) in incidents" v-on:click="selectRow(incident.date, incident.time, incident.incident, incident.block)" v-if="neighborhoodVisible(incident.neighborhood_number)&& isFiltered(incident.incident)" v-bind:style="getBgColor(incident.code)">
                         <td> {{ key }} </td>
                         <td> {{ incident.date }} </td>
                         <td> {{ incident.time }} </td>

@@ -52,7 +52,13 @@ function Init(api_url) {
             codes: {},
 			neighborhood_crimes: new Array(17),
             visible_neighborhoods: new Array(17),
-			Robbery: true;
+			Robbery: true,
+			Murder:true,
+			Rape:true,
+			Vandalism: true,
+			Burglary: true,
+			Theft: true,
+			Narcotics:true
             
         },
         computed: {
@@ -95,6 +101,14 @@ function Init(api_url) {
                     
                     /*change to coords of address*/   
                },
+			   isFiltered(incident){
+				   if(this[incident.replace(/\s/g,"")]===undefined){
+					   return false
+				   }
+					else{
+						return this[incident];
+					}
+			   },
                 neighborhoodVisible(neighborhood_number){
                    return (this.visible_neighborhoods[neighborhood_number-1]);   
                },
