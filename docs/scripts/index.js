@@ -106,7 +106,7 @@ function Init(api_url) {
 
                             markerButton.type="button";
                             markerelement.appendChild(markerButton);
-                            let marker= new L.marker([lat, lon]);
+                            let marker= new L.marker([lat, lon], { icon: incidentIcon });
                             marker.bindPopup(
                             markerelement
                             // add delete button
@@ -259,12 +259,14 @@ function Init(api_url) {
     // custom icon for map
     var pointerIcon = L.icon({
         iconUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon-2x.png',
-        //shadowUrl: '',
-
         iconSize:     [50, 82], // size of the icon
-        //shadowSize:   [50, 64], // size of the shadow
         iconAnchor:   [25, 80], // point of the icon which will correspond to marker's location
-        //shadowAnchor: [4, 62],  // the same for the shadow
+        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+    var incidentIcon = L.icon({
+        iconUrl: 'images/incident-marker-icon.png',
+        iconSize:     [40, 40], // size of the icon
+        iconAnchor:   [26, 39], // point of the icon which will correspond to marker's location
         popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
     });
     
