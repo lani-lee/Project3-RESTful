@@ -79,8 +79,8 @@
         <input type="checkbox" value="CapitolRiver" v-model="CapitolRiver">Capitol River<br>
   </div>
   <div id ="dateInput">
-	  StartTime: <input type="time" name="time" >
-	  EndTime: <input type="time" name="time"><br>
+	  StartTime: <input type="time"  step='1' min ="00:00:00" max="23:59:59">
+	  EndTime: <input type="time"><br>
   </div>
   <div>
   	  startDate: <input type="date" v-model ="startDate">
