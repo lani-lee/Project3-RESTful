@@ -78,7 +78,9 @@ function Init(api_url) {
             SummitHill: true,
             CapitolRiver: true,
             startDate:"2019-10-01",			
-			endDate: "2019-10-31"
+			endDate: "2019-10-31",
+			startTime:"00:00:00",
+			endTime:"23:59:59"
         },
         computed: {
             
@@ -133,7 +135,50 @@ function Init(api_url) {
                     
                },
 			   isTime(time){
-				  // console.log(this.startTime);
+				   
+				   if(this.startTime.match(/[0-9][0-9]:[0-9][0-9]:[0-9][0-9]/)===null)
+				   {
+					   return true;
+				   }
+				    if(this.endTime.match(/[0-9][0-9]:[0-9][0-9]:[0-9][0-9]/)===null)
+				   {
+					   return true;
+				   }
+				  var start=this.startTime.split(":");
+				  var end=this.endTime.split(":");
+				  
+				  if((parseInt(end[0]) <=23 && parseInt(start[0])<=23)&& (parseInt(end[0])>=0&&parseInt(start[0])>=0))//HH
+				  {
+					  if((parseInt(end[1]) <=59 && parseInt(start[1])<=59)&& (parseInt(end[1])>=0&&parseInt(start[1])>=0))
+					  {
+						  if((parseInt(end[2]) <=59 && parseInt(start[2])<=59)&& (parseInt(end[2])>=0&&parseInt(start[2])>=0)){
+							  var tableTime=parseInt(time.replace(":",""));
+							  if(tableTime>=(parseInt(""+start[0]+start[1]+start[2])&&tableTime<=(parseInt(""+end[0]+end[1]+end[2]))))
+							  {
+								  return true;
+							  }
+							  else
+							  {
+								  return false;
+							  }
+						  }
+						  else{
+							  					  window.alert("bad Seconds");
+												  return true;
+
+						  }
+					  }//mm
+					  else{
+						  					  window.alert("bad Minutes");
+											  return true;
+
+					  }
+				  }
+				  else{
+					  window.alert("bad hour");
+					  return true;
+				  }
+				  
 			   },
 			   changeTable(){
 				   $.getJSON(crime_api_url + "/incidents?start_date="+this.startDate+"&end_date="+this.endDate, (data)=> {

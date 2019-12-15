@@ -79,8 +79,8 @@
         <input type="checkbox" value="CapitolRiver" v-model="CapitolRiver">Capitol River<br>
   </div>
   <div id ="dateInput">
-	  StartTime: <input type="time"  step='1' min ="00:00:00" max="23:59:59">
-	  EndTime: <input type="time"><br>
+	  StartTime: <input type="text" value="HH:MM:SS" v-model="startTime"><br>
+	  EndTime: <input type="text" value="HH:MM:SS" v-model="endTime"><br>
   </div>
   <div>
   	  startDate: <input type="date" v-model ="startDate">
@@ -120,7 +120,7 @@
                     <th scope="col">Block</th>
                 </thead>
                 <tbody>
-                    <tr scope="row" v-for="(incident, key) in incidents" v-on:click="selectRow(incident.date, incident.time, incident.incident, incident.block)" v-if="neighborhoodVisible(incident.neighborhood_number)&& isFiltered(incident.incident)&&neighborhoodSelected(incident.neighborhood_number)" v-bind:style="getBgColor(incident.code)">
+                    <tr scope="row" v-for="(incident, key) in incidents" v-on:click="selectRow(incident.date, incident.time, incident.incident, incident.block)" v-if="neighborhoodVisible(incident.neighborhood_number)&& isFiltered(incident.incident)&&neighborhoodSelected(incident.neighborhood_number)&&isTime(incident.time)" v-bind:style="getBgColor(incident.code)">
                         <td> {{ key }} </td>
                         <td> {{ incident.date }} </td>
                         <td> {{ incident.time }} </td>
