@@ -58,8 +58,9 @@ function Init(api_url) {
 			Vandalism: true,
 			Burglary: true,
 			Theft: true,
-			Narcotics:true
-            
+			Narcotics:true,
+            startDate:"2019-10-01",			
+			endDate: "2019-10-31"
         },
         computed: {
             
@@ -108,6 +109,15 @@ function Init(api_url) {
 					else{
 						return this[incident];
 					}
+			   },
+			   isTime(time){
+				  // console.log(this.startTime);
+			   },
+			   changeTable(){
+				   $.getJSON(crime_api_url + "/incidents?start_date="+this.startDate+"&end_date="+this.endDate, (data)=> {
+						incident_list.incidents = data;
+				   });
+				   this.updateTable();
 			   },
                 neighborhoodVisible(neighborhood_number){
                    return (this.visible_neighborhoods[neighborhood_number-1]);   

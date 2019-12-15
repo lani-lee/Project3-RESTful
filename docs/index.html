@@ -62,16 +62,16 @@
   <div id ="Neighborhood">
 		
   </div>
-  <div id ="dateInput">
-	  StartTime: <input type="time" name="time">
+<!--  <div id ="dateInput">
+	  StartTime: <input type="time" name="time" >
 	  EndTime: <input type="time" name="time"><br>
-  </div>
+  </div>-->
   <div>
-  	  startDate: <input type="date" name="date">
-	  endDate: <input type="date" name="date">
-	    <input type="submit" value="Submit">
+  	  startDate: <input type="date" v-model ="startDate">
+	  endDate: <input type="date" v-model = "endDate">
   </div> 
 </form>  
+ <button v-on:click="changeTable()">Change Date</button>
 </div>
         <div id="mapid"></div>
         
