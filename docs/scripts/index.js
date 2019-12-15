@@ -59,6 +59,23 @@ function Init(api_url) {
 			Burglary: true,
 			Theft: true,
 			Narcotics:true,
+            ConwayBattlecreekHighwood: true,
+            GreaterEastSide: true,            
+            WestSide: true,
+            DaytonsBluff: true,
+            PaynePhalen: true,
+            NorthEnd: true,
+            ThomasDaleFrogtown: true,
+            SummitUniversity: true,
+            WestSeventh: true,
+            Como: true,
+            HamlineMidway: true,
+            StAnthony: true,
+            UnionPark: true,
+            MacalesterGroveland: true,
+            Highland: true,
+            SummitHill: true,
+            CapitolRiver: true,
             startDate:"2019-10-01",			
 			endDate: "2019-10-31"
         },
@@ -110,6 +127,10 @@ function Init(api_url) {
 						return this[incident];
 					}
 			   },
+               neighborhoodSelected(neighborhood_number) {
+                    return this[this.neighborhoods["N" + neighborhood_number].replace(/[^A-Za-z]/g, '')];
+                    
+               },
 			   isTime(time){
 				  // console.log(this.startTime);
 			   },

@@ -60,7 +60,23 @@
   <input type="checkbox" value="Narcotics" v-model="Narcotics"> Narcotics<br><br>
   </div>
   <div id ="Neighborhood">
-		
+		<input type="checkbox" value="ConwayBattlecreekHighwood" v-model="ConwayBattlecreekHighwood">Conway/Battlecreek/Highwood<br>
+        <input type="checkbox" value="GreaterEastSide" v-model="GreaterEastSide">Greater East Side<br>
+        <input type="checkbox" value="WestSide" v-model="WestSide">West Side<br>
+        <input type="checkbox" value="DaytonsBluff" v-model="DaytonsBluff">Dayton's Bluff<br>
+        <input type="checkbox" value="PaynePhalen" v-model="PaynePhalen">Payne/Phalen<br>
+        <input type="checkbox" value="NorthEnd" v-model="NorthEnd">North End<br>
+        <input type="checkbox" value="ThomasDaleFrogtown" v-model="ThomasDaleFrogtown">Thomas/Dale(Frogtown)<br>
+        <input type="checkbox" value="SummitUniversity" v-model="SummitUniversity">Summit/University<br>
+        <input type="checkbox" value="WestSeventh" v-model="WestSeventh">West Seventh<br>
+        <input type="checkbox" value="Como" v-model="Como">Como<br>
+        <input type="checkbox" value="HamlineMidway" v-model="HamlineMidway">Hamline/Midway<br>
+        <input type="checkbox" value="StAnthony" v-model="StAnthony">St. Anthony<br>
+        <input type="checkbox" value="UnionPark" v-model="UnionPark">Union Park<br>
+        <input type="checkbox" value="MacalesterGroveland" v-model="MacalesterGroveland">Macalester-Groveland<br>
+        <input type="checkbox" value="Highland" v-model="Highland">Highland<br>
+        <input type="checkbox" value="SummitHill" v-model="SummitHill">Summit Hill<br>
+        <input type="checkbox" value="CapitolRiver" v-model="CapitolRiver">Capitol River<br>
   </div>
 <!--  <div id ="dateInput">
 	  StartTime: <input type="time" name="time" >
@@ -104,7 +120,7 @@
                     <th scope="col">Block</th>
                 </thead>
                 <tbody>
-                    <tr scope="row" v-for="(incident, key) in incidents" v-on:click="selectRow(incident.date, incident.time, incident.incident, incident.block)" v-if="neighborhoodVisible(incident.neighborhood_number)&& isFiltered(incident.incident)" v-bind:style="getBgColor(incident.code)">
+                    <tr scope="row" v-for="(incident, key) in incidents" v-on:click="selectRow(incident.date, incident.time, incident.incident, incident.block)" v-if="neighborhoodVisible(incident.neighborhood_number)&& isFiltered(incident.incident)&&neighborhoodSelected(incident.neighborhood_number)" v-bind:style="getBgColor(incident.code)">
                         <td> {{ key }} </td>
                         <td> {{ incident.date }} </td>
                         <td> {{ incident.time }} </td>
