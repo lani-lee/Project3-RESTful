@@ -6,6 +6,7 @@ var incident_list;
 var neighborhood;
 var neighborhood_coords;
 var markers;
+var m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17;
 // prefix of code
 // ex: C120 -> 2
 //     C9959 -> 99
@@ -137,8 +138,33 @@ function Init(api_url) {
 			   changeTable(){
 				   $.getJSON(crime_api_url + "/incidents?start_date="+this.startDate+"&end_date="+this.endDate, (data)=> {
 						incident_list.incidents = data;
+                        for (var i in incident_list.incidents) {
+                        incident_list.neighborhood_crimes[incident_list.incidents[i].neighborhood_number-1]=0;
+                       }
+                       for (var i in incident_list.incidents) {
+                            incident_list.neighborhood_crimes[incident_list.incidents[i].neighborhood_number-1]+=1;
+                       }
+                       m1.bindPopup("N1: \n Number of Crimes: "+incident_list.neighborhood_crimes[0]);
+                       m2.bindPopup("N2: \n Number of Crimes: "+incident_list.neighborhood_crimes[1]);
+                       m3.bindPopup("N3: \n Number of Crimes: "+incident_list.neighborhood_crimes[2]);
+                       m4.bindPopup("N4: \n Number of Crimes: "+incident_list.neighborhood_crimes[3]);
+                       m5.bindPopup("N5: \n Number of Crimes: "+incident_list.neighborhood_crimes[4]);
+                       m6.bindPopup("N6: \n Number of Crimes: "+incident_list.neighborhood_crimes[5]);
+                       m7.bindPopup("N7: \n Number of Crimes: "+incident_list.neighborhood_crimes[6]);
+                       m8.bindPopup("N8: \n Number of Crimes: "+incident_list.neighborhood_crimes[7]);
+                       m9.bindPopup("N9: \n Number of Crimes: "+incident_list.neighborhood_crimes[8]);
+                       m10.bindPopup("N10: \n Number of Crimes: "+incident_list.neighborhood_crimes[9]);
+                       m11.bindPopup("N11: \n Number of Crimes: "+incident_list.neighborhood_crimes[10]);
+                       m12.bindPopup("N12: \n Number of Crimes: "+incident_list.neighborhood_crimes[11]);
+                       m13.bindPopup("N13: \n Number of Crimes: "+incident_list.neighborhood_crimes[12]);
+                       m14.bindPopup("N14: \n Number of Crimes: "+incident_list.neighborhood_crimes[13]);
+                       m15.bindPopup("N15: \n Number of Crimes: "+incident_list.neighborhood_crimes[14]);
+                       m16.bindPopup("N16: \n Number of Crimes: "+incident_list.neighborhood_crimes[15]);
+                       m17.bindPopup("N17: \n Number of Crimes: "+incident_list.neighborhood_crimes[16]);
 				   });
 				   this.updateTable();
+                   
+                   
 			   },
                 neighborhoodVisible(neighborhood_number){
                    return (this.visible_neighborhoods[neighborhood_number-1]);   
@@ -255,6 +281,8 @@ function Init(api_url) {
     
     neighborhood_coords = [[44.939038,-93.015913], [44.981086,-93.024898], [44.929603,-93.083709], [44.959407,-93.056327], [44.978094,-93.067305], [44.976429, -93.108051], [44.960303, -93.119727], [44.952346, -93.129301], [44.932281, -93.120426], [44.983644, -93.147154], [44.962879, -93.166564], [44.969908, -93.197343], [44.949160, -93.172167], [44.936545, -93.178968], [44.911447, -93.173530], [44.937675, -93.137083], [44.948875, -93.093550]];
 
+
+    
 	// get incident data from api, populate vue
 	$.getJSON(crime_api_url + "/incidents?start_date=2019-10-01&end_date=2019-10-31", (data)=> {
         incident_list.incidents = data;
@@ -263,55 +291,55 @@ function Init(api_url) {
             incident_list.neighborhood_crimes[incident_list.incidents[i].neighborhood_number-1]+=1;
 		}
         
-		L.marker([44.939038,-93.015913],//BattleCreek
+		m1 = L.marker([44.939038,-93.015913],//BattleCreek
         {
         }).bindPopup("N1: \n Number of Crimes: "+incident_list.neighborhood_crimes[0]).addTo(map);
-        L.marker([44.981086,-93.024898],//GreaterEastSide
+        m2 = L.marker([44.981086,-93.024898],//GreaterEastSide
         {
         }).bindPopup("N2: \n Number of Crimes: "+incident_list.neighborhood_crimes[1]).addTo(map);
-        L.marker([44.929603,-93.083709],//EastSide
+        m3 = L.marker([44.929603,-93.083709],//EastSide
         {
         }).bindPopup("N3: \n Number of Crimes: "+incident_list.neighborhood_crimes[2]).addTo(map);
-        L.marker([44.959407,-93.056327],//DaytonBluff
+        m4 = L.marker([44.959407,-93.056327],//DaytonBluff
         {
         }).bindPopup("N4: \n Number of Crimes: "+incident_list.neighborhood_crimes[3]).addTo(map);
-        L.marker([44.978094,-93.067305],//Payne/Phalen
+        m5 = L.marker([44.978094,-93.067305],//Payne/Phalen
         {
         }).bindPopup("N5: \n Number of Crimes: "+incident_list.neighborhood_crimes[4]).addTo(map);
-        L.marker([44.976429, -93.108051],//NorthEnd
+        m6 = L.marker([44.976429, -93.108051],//NorthEnd
         {
         }).bindPopup("N6: \n Number of Crimes: "+incident_list.neighborhood_crimes[5]).addTo(map);
-        L.marker([44.960303, -93.119727],//Thomas/FrogTown
+        m7 = L.marker([44.960303, -93.119727],//Thomas/FrogTown
         {
         }).bindPopup("N7: \n Number of Crimes: "+incident_list.neighborhood_crimes[6]).addTo(map);
-        L.marker([44.952346, -93.129301],//Summit-University
+        m8 = L.marker([44.952346, -93.129301],//Summit-University
         {
         }).bindPopup("N8:\n Number of Crimes: "+incident_list.neighborhood_crimes[7]).addTo(map);
-        L.marker([44.932281, -93.120426],//West-7th
+        m9 = L.marker([44.932281, -93.120426],//West-7th
         {
         }).bindPopup("N9:\n Number of Crimes: "+incident_list.neighborhood_crimes[8]).addTo(map);
-        L.marker([44.983644, -93.147154],//Como
+        m10 = L.marker([44.983644, -93.147154],//Como
         {
         }).bindPopup("N10: \n Number of Crimes: "+incident_list.neighborhood_crimes[9]).addTo(map);
-        L.marker([44.962879, -93.166564],//Mid-way/Hamline
+        m11 = L.marker([44.962879, -93.166564],//Mid-way/Hamline
         {
         }).bindPopup("N11: \n Number of Crimes: "+incident_list.neighborhood_crimes[10]).addTo(map);
-        L.marker([44.969908, -93.197343],
+        m12 = L.marker([44.969908, -93.197343],
         {
         }).bindPopup("N12:\n Number of Crimes: "+incident_list.neighborhood_crimes[11]).addTo(map);
-        L.marker([44.949160, -93.172167],//Union-Park
+        m13 = L.marker([44.949160, -93.172167],//Union-Park
         {
         }).bindPopup("N13: \n Number of Crimes: "+incident_list.neighborhood_crimes[12]).addTo(map);
-        L.marker([44.936545, -93.178968],//Macalster-GroveLand
+        m14 = L.marker([44.936545, -93.178968],//Macalster-GroveLand
         {
         }).bindPopup("N14: \n Number of Crimes: "+incident_list.neighborhood_crimes[13]).addTo(map);
-        L.marker([44.911447, -93.173530],//Highland
+        m15 = L.marker([44.911447, -93.173530],//Highland
         {
         }).bindPopup("N15:\n Number of Crimes: "+incident_list.neighborhood_crimes[14]).addTo(map);
-        L.marker([44.937675, -93.137083],//summitHall
+        m16 = L.marker([44.937675, -93.137083],//summitHall
         {
         }).bindPopup("N16:\n Number of Crimes: "+incident_list.neighborhood_crimes[15]).addTo(map);
-        L.marker([44.948875, -93.093550],//Capitol-river
+        m17 = L.marker([44.948875, -93.093550],//Capitol-river
         {
         }).bindPopup("N17: \n Number of Crimes: "+incident_list.neighborhood_crimes[16]).addTo(map);
 	});
