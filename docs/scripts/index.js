@@ -100,7 +100,7 @@ function Init(api_url) {
                             var lat = data[0].lat;
                             var lon = data[0].lon;
                             let markerelement=document.createElement("div");
-                            markerelement.textContent="Date: " + date + "Time: " + time + "Incident: " + incident;
+                            markerelement.textContent="Date: " + date + " Time: " + time + " Incident: " + incident;
                             let markerButton= document.createElement("button");
                             markerButton.textContent="Delete";
 
@@ -384,7 +384,7 @@ function Init(api_url) {
     //console.log(getIncidents(corner1, corner2));
     
     map.on("moveend", function() {
-        document.getElementById('info').innerHTML =  map.getCenter();
+        document.getElementById('info').innerHTML = "Current Location: (" + map.getCenter().lat + ", " + map.getCenter().lng + ")";
         control.placeholder=""+map.getCenter();
         
         // change visible neighborhoods here when map moves

@@ -1,10 +1,10 @@
 #mapid {
-	height: 700px;
+	height: 800px;
 	width:80%;
 	float:right;
 	margin: 20px auto;
 }
-		
+
 #incident-list{
    overflow-y:scroll;
    height:300px;
@@ -51,21 +51,23 @@ table {
 }
 
 .flex-container {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 .flex-container > div {
-  margin: 50%;
-  text-align: center;
-  line-height: 100%;
-  font-size: 100%;
+    margin: 50%;
+    text-align: center;
+    line-height: 100%;
+    font-size: 100%;
 }
 #filter{
-	
-	 width: 18%;
+	width: 18%;
 	float:left;
 }
 
+#legend {
+    margin: 20px auto;
+}
 
 #time-msg {
     color: red;

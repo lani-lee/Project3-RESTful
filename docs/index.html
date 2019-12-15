@@ -46,96 +46,96 @@
 				</ul>
 			</div>
 		</nav>
-<div id ="Vue">		
-<div class="flex-container" id ="filter">
-<h1> Filters: </h1>
-<form action ="onclick">
-  <div id ="checkBox">
-  <input type="checkbox" value="Robbery" v-model="Robbery">Robbery<br>
-  <input type="checkbox" value="Murder" v-model="Murder"> Murder<br>
-  <input type="checkbox" value="Rape" v-model="Rape"> Rape<br>
-  <input type="checkbox" value="Vandalism" v-model="Vandalism"> Vandalism<br>
-  <input type="checkbox" value="Burglary" v-model="Burglary"> Burglary<br>
-  <input type="checkbox" value="Theft" v-model="Theft"> Theft<br>
-  <input type="checkbox" value="Narcotics" v-model="Narcotics"> Narcotics<br><br>
-  </div>
-  <div id ="Neighborhood">
-		<input type="checkbox" value="ConwayBattlecreekHighwood" v-model="ConwayBattlecreekHighwood">Conway/Battlecreek/Highwood<br>
-        <input type="checkbox" value="GreaterEastSide" v-model="GreaterEastSide">Greater East Side<br>
-        <input type="checkbox" value="WestSide" v-model="WestSide">West Side<br>
-        <input type="checkbox" value="DaytonsBluff" v-model="DaytonsBluff">Dayton's Bluff<br>
-        <input type="checkbox" value="PaynePhalen" v-model="PaynePhalen">Payne/Phalen<br>
-        <input type="checkbox" value="NorthEnd" v-model="NorthEnd">North End<br>
-        <input type="checkbox" value="ThomasDaleFrogtown" v-model="ThomasDaleFrogtown">Thomas/Dale(Frogtown)<br>
-        <input type="checkbox" value="SummitUniversity" v-model="SummitUniversity">Summit/University<br>
-        <input type="checkbox" value="WestSeventh" v-model="WestSeventh">West Seventh<br>
-        <input type="checkbox" value="Como" v-model="Como">Como<br>
-        <input type="checkbox" value="HamlineMidway" v-model="HamlineMidway">Hamline/Midway<br>
-        <input type="checkbox" value="StAnthony" v-model="StAnthony">St. Anthony<br>
-        <input type="checkbox" value="UnionPark" v-model="UnionPark">Union Park<br>
-        <input type="checkbox" value="MacalesterGroveland" v-model="MacalesterGroveland">Macalester-Groveland<br>
-        <input type="checkbox" value="Highland" v-model="Highland">Highland<br>
-        <input type="checkbox" value="SummitHill" v-model="SummitHill">Summit Hill<br>
-        <input type="checkbox" value="CapitolRiver" v-model="CapitolRiver">Capitol River<br>
-  </div>
-  <div id ="dateInput">
-	  StartTime: <input type="text" value="HH:MM:SS" v-model="startTime"><br>
-	  EndTime: <input type="text" value="HH:MM:SS" v-model="endTime"><br>
-  </div>
-  <div>
-    <p id="time-msg"></p>
-  </div>
-  <div>
-  	  startDate: <input type="date" v-model ="startDate">
-	  endDate: <input type="date" v-model = "endDate">
-  </div> 
-</form>  
- <button v-on:click="changeTable()">Change Date</button>
-</div>
-        <div id="mapid"></div>
-        
-        <div id="dialog-form">
-            <label for="name">URL for St. Paul Crime API:</label>
-            <input type="text" id="prompt_input" class="text ui-widget-content ui-corner-all" style="width: 320px;"/>
-        </div>
-        <pre id="info"></pre>
-
-        <div class="row">
-            <div>
-                <p style="background-color:LightPink">Violent Crimes</p>
-                
-                <p style="background-color:LightCyan">Property Crimes</p>
-                
-                <p style="background-color:PaleGreen">Other Crimes</p>
+        <div id ="Vue">		
+            <div class="flex-container" id ="filter">
+                <h1> Filters: </h1>
+                <form action ="onclick">
+                <div id ="checkBox">
+                    <input type="checkbox" value="Robbery" v-model="Robbery"> Robbery<br>
+                    <input type="checkbox" value="Murder" v-model="Murder"> Murder<br>
+                    <input type="checkbox" value="Rape" v-model="Rape"> Rape<br>
+                    <input type="checkbox" value="Vandalism" v-model="Vandalism"> Vandalism<br>
+                    <input type="checkbox" value="Burglary" v-model="Burglary"> Burglary<br>
+                    <input type="checkbox" value="Theft" v-model="Theft"> Theft<br>
+                    <input type="checkbox" value="Narcotics" v-model="Narcotics"> Narcotics<br><br>
+                </div>
+                <div id ="Neighborhood">
+                    <input type="checkbox" value="ConwayBattlecreekHighwood" v-model="ConwayBattlecreekHighwood"> Conway/Battlecreek/Highwood<br>
+                    <input type="checkbox" value="GreaterEastSide" v-model="GreaterEastSide"> Greater East Side<br>
+                    <input type="checkbox" value="WestSide" v-model="WestSide"> West Side<br>
+                    <input type="checkbox" value="DaytonsBluff" v-model="DaytonsBluff"> Dayton's Bluff<br>
+                    <input type="checkbox" value="PaynePhalen" v-model="PaynePhalen"> Payne/Phalen<br>
+                    <input type="checkbox" value="NorthEnd" v-model="NorthEnd"> North End<br>
+                    <input type="checkbox" value="ThomasDaleFrogtown" v-model="ThomasDaleFrogtown"> Thomas/Dale(Frogtown)<br>
+                    <input type="checkbox" value="SummitUniversity" v-model="SummitUniversity"> Summit/University<br>
+                    <input type="checkbox" value="WestSeventh" v-model="WestSeventh"> West Seventh<br>
+                    <input type="checkbox" value="Como" v-model="Como"> Como<br>
+                    <input type="checkbox" value="HamlineMidway" v-model="HamlineMidway"> Hamline/Midway<br>
+                    <input type="checkbox" value="StAnthony" v-model="StAnthony"> St. Anthony<br>
+                    <input type="checkbox" value="UnionPark" v-model="UnionPark"> Union Park<br>
+                    <input type="checkbox" value="MacalesterGroveland" v-model="MacalesterGroveland"> Macalester-Groveland<br>
+                    <input type="checkbox" value="Highland" v-model="Highland"> Highland<br>
+                    <input type="checkbox" value="SummitHill" v-model="SummitHill"> Summit Hill<br>
+                    <input type="checkbox" value="CapitolRiver" v-model="CapitolRiver"> Capitol River<br>
+                </div>
+                <div id ="dateInput">
+                    Start Time: <input type="text" value="HH:MM:SS" v-model="startTime"><br>
+                    End Time:   <input type="text" value="HH:MM:SS" v-model="endTime"><br>
+                </div>
+                <div>
+                    <p id="time-msg"></p>
+                </div>
+                <div>
+                    Start Date: <input type="date" v-model ="startDate">
+                    End Date:   <input type="date" v-model = "endDate">
+                </div> 
+                </form>  
+                    <button v-on:click="changeTable()">Change Date</button>
             </div>
-        </div>
-        
-        <div>   
-            <table class="table" id='incident-list'>
-                <thead>
-                    <th scope="col">Case Number</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Time</th>
-                    <th scope="col">Incident Type</th>
-                    <th scope="col">Incident</th>
-                    <th scope="col">Police Grid</th>
-                    <th scope="col">Neighborhood</th>
-                    <th scope="col">Block</th>
-                </thead>
-                <tbody>
-                    <tr scope="row" v-for="(incident, key) in incidents" v-on:click="selectRow(incident.date, incident.time, incident.incident, incident.block)" v-if="neighborhoodVisible(incident.neighborhood_number)&& isFiltered(incident.incident)&&neighborhoodSelected(incident.neighborhood_number)&&isTime(incident.time)" v-bind:style="getBgColor(incident.code)">
-                        <td> {{ key }} </td>
-                        <td> {{ incident.date }} </td>
-                        <td> {{ incident.time }} </td>
-                        <td> {{ codes["C" + incident.code] }} </td>
-                        <td> {{ incident.incident }} </td>
-                        <td> {{ incident.police_grid }} </td>
-                        <td> {{ neighborhoods["N" + incident.neighborhood_number] }} </td>
-                        <td> {{ incident.block }} </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <div id="mapid"></div>
+            
+            <div id="dialog-form">
+                <label for="name">URL for St. Paul Crime API:</label>
+                <input type="text" id="prompt_input" class="text ui-widget-content ui-corner-all" style="width: 320px;"/>
+            </div>
+            <pre id="info"></pre>
+
+            <div class="row" id="legend">
+                <div>
+                    <p style="background-color:LightPink">Violent Crimes</p>
+                    
+                    <p style="background-color:LightCyan">Property Crimes</p>
+                    
+                    <p style="background-color:PaleGreen">Other Crimes</p>
+                </div>
+            </div>
+            
+            <div>   
+                <table class="table" id='incident-list'>
+                    <thead>
+                        <th scope="col">Case Number</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Incident Type</th>
+                        <th scope="col">Incident</th>
+                        <th scope="col">Police Grid</th>
+                        <th scope="col">Neighborhood</th>
+                        <th scope="col">Block</th>
+                    </thead>
+                    <tbody>
+                        <tr scope="row" v-for="(incident, key) in incidents" v-on:click="selectRow(incident.date, incident.time, incident.incident, incident.block)" v-if="neighborhoodVisible(incident.neighborhood_number)&& isFiltered(incident.incident)&&neighborhoodSelected(incident.neighborhood_number)&&isTime(incident.time)" v-bind:style="getBgColor(incident.code)">
+                            <td> {{ key }} </td>
+                            <td> {{ incident.date }} </td>
+                            <td> {{ incident.time }} </td>
+                            <td> {{ codes["C" + incident.code] }} </td>
+                            <td> {{ incident.incident }} </td>
+                            <td> {{ incident.police_grid }} </td>
+                            <td> {{ neighborhoods["N" + incident.neighborhood_number] }} </td>
+                            <td> {{ incident.block }} </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 		</div>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
