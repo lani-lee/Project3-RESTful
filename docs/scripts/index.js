@@ -198,23 +198,23 @@ function Init(api_url) {
                         for (var i in incident_list.incidents) {
                             incident_list.neighborhood_crimes[incident_list.incidents[i].neighborhood_number-1]+=1;
                        }
-                       m1.bindPopup("N1: \n Number of Crimes: "+incident_list.neighborhood_crimes[0]);
-                       m2.bindPopup("N2: \n Number of Crimes: "+incident_list.neighborhood_crimes[1]);
-                       m3.bindPopup("N3: \n Number of Crimes: "+incident_list.neighborhood_crimes[2]);
-                       m4.bindPopup("N4: \n Number of Crimes: "+incident_list.neighborhood_crimes[3]);
-                       m5.bindPopup("N5: \n Number of Crimes: "+incident_list.neighborhood_crimes[4]);
-                       m6.bindPopup("N6: \n Number of Crimes: "+incident_list.neighborhood_crimes[5]);
-                       m7.bindPopup("N7: \n Number of Crimes: "+incident_list.neighborhood_crimes[6]);
-                       m8.bindPopup("N8: \n Number of Crimes: "+incident_list.neighborhood_crimes[7]);
-                       m9.bindPopup("N9: \n Number of Crimes: "+incident_list.neighborhood_crimes[8]);
-                       m10.bindPopup("N10: \n Number of Crimes: "+incident_list.neighborhood_crimes[9]);
-                       m11.bindPopup("N11: \n Number of Crimes: "+incident_list.neighborhood_crimes[10]);
-                       m12.bindPopup("N12: \n Number of Crimes: "+incident_list.neighborhood_crimes[11]);
-                       m13.bindPopup("N13: \n Number of Crimes: "+incident_list.neighborhood_crimes[12]);
-                       m14.bindPopup("N14: \n Number of Crimes: "+incident_list.neighborhood_crimes[13]);
-                       m15.bindPopup("N15: \n Number of Crimes: "+incident_list.neighborhood_crimes[14]);
-                       m16.bindPopup("N16: \n Number of Crimes: "+incident_list.neighborhood_crimes[15]);
-                       m17.bindPopup("N17: \n Number of Crimes: "+incident_list.neighborhood_crimes[16]);
+                       m1.bindPopup("Conway/Battlecreek/Highwood: \n Number of Crimes "+incident_list.neighborhood_crimes[0]);
+                       m2.bindPopup("Greater East Side: \n Number of Crimes: "+incident_list.neighborhood_crimes[1]);
+                       m3.bindPopup("West Side: \n Number of Crimes: "+incident_list.neighborhood_crimes[2]);
+                       m4.bindPopup("Dayton's Bluff: \n Number of Crimes: "+incident_list.neighborhood_crimes[3]);
+                       m5.bindPopup("Payne/Phalen: \n Number of Crimes: "+incident_list.neighborhood_crimes[4]);
+                       m6.bindPopup("North End: \n Number of Crimes: "+incident_list.neighborhood_crimes[5]);
+                       m7.bindPopup("Thomas/Dale(Frogtown): \n Number of Crimes: "+incident_list.neighborhood_crimes[6]);
+                       m8.bindPopup("Summit/University: \n Number of Crimes: "+incident_list.neighborhood_crimes[7]);
+                       m9.bindPopup("West Seventh: \n Number of Crimes: "+incident_list.neighborhood_crimes[8]);
+                       m10.bindPopup("Como: \n Number of Crimes: "+incident_list.neighborhood_crimes[9]);
+                       m11.bindPopup("Hamline/Midway: \n Number of Crimes: "+incident_list.neighborhood_crimes[10]);
+                       m12.bindPopup("St. Anthony: \n Number of Crimes: "+incident_list.neighborhood_crimes[11]);
+                       m13.bindPopup("Union Park: \n Number of Crimes: "+incident_list.neighborhood_crimes[12]);
+                       m14.bindPopup("Macalester-Groveland: \n Number of Crimes: "+incident_list.neighborhood_crimes[13]);
+                       m15.bindPopup("Highland: \n Number of Crimes: "+incident_list.neighborhood_crimes[14]);
+                       m16.bindPopup("Summit Hill: \n Number of Crimes: "+incident_list.neighborhood_crimes[15]);
+                       m17.bindPopup("Capitol River: \n Number of Crimes: "+incident_list.neighborhood_crimes[16]);
                    });
                    this.updateTable();
                    
