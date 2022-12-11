@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/lani-lee/Project3-RESTful#readme",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "js2xmlparser": "^4.0.0",
     "sqlite3": "^4.1.0"
   }
